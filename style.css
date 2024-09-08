@@ -1,0 +1,31 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    padding: 30px;
+    background-color: #395B64;
+}
+
+.navLinks {
+    display: flex;
+    column-gap: 10px;
+}
+
+.navLinks>li {
+    list-style: none;
+}
+
+li>a {
+    color: #E7F6F2;
+    text-decoration: none;
+}
+
+li>a:hover {
+    color: blue;
+}
