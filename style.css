@@ -8,17 +8,28 @@
 .navigation {
     display: flex;
     justify-content: space-between;
-    padding: 30px;
-    background-color: #395B64;
+    padding: 35px 100px;
+    background-color: #2C3333;
+}
+
+.linkDiv {
+    display: flex;
+    align-items: center;
 }
 
 .navLinks {
     display: flex;
-    column-gap: 10px;
+    column-gap: 40px;
+}
+
+.logo {
+    font-size: 30px;
+    color: #E7F6F2;
 }
 
 .navLinks>li {
     list-style: none;
+    font-size: 20px;
 }
 
 li>a {
@@ -27,5 +38,5 @@ li>a {
 }
 
 li>a:hover {
-    color: blue;
+    color: #A5C9CA;
 }
