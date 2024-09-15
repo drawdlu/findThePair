@@ -47,5 +47,18 @@ function createValues(cardCount) {
     return arrayOfPairs.sort(() => .5 - Math.random());
 }
 
+// Toggle cards
+function listenToClicks() {
+    const cards = document.querySelectorAll('.card')
+    cards.forEach( (card) => {
+        card.addEventListener('click', toggleCard)
+    })
+}
+
+function toggleCard(event) {
+    const card = this.firstElementChild.classList;
+    card.toggle('displayCard')
+}
 
 createCards(INITIAL_CARD_COUNT);
+listenToClicks();
