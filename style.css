@@ -71,4 +71,18 @@ li>a:hover {
     height: 80%;
     background-color: aqua;
     border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cardValue {
+    width: 80%;
+    height: 80%;
+    background-color: black;
+    color: white;
+    font-size: 4em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
