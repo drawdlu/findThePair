@@ -1,6 +1,7 @@
-const INITIAL_CARD_COUNT = 9;
+const INITIAL_CARD_COUNT = 12;
 const ROW_NUMBER = 3;
 
+// Render Cards
 function createCards(cardCount) {
     const container = document.querySelector('.container');
     for (let i = 0; i < ROW_NUMBER; i++) {
@@ -10,6 +11,7 @@ function createCards(cardCount) {
         createCardColumn(row, columnCount);
         container.appendChild(row);
     }
+    addCardValues(cardCount);
 }
 
 function createCardColumn(rowDiv, columnCount) {
@@ -22,5 +24,28 @@ function createCardColumn(rowDiv, columnCount) {
         rowDiv.appendChild(card);
     }
 }
+
+// Create and insert values to cards
+function addCardValues(cardCount) {
+    const arrayOfPairs = createValues(cardCount);
+    const cards = document.querySelectorAll('.cardValue');
+    let currentIndex = 0;
+    cards.forEach( (card) => {
+        card.textContent = arrayOfPairs[currentIndex];
+        currentIndex += 1;
+    });
+}
+
+function createValues(cardCount) {
+    const numOfPairs = cardCount / 2;
+    const arrayOfPairs = [];
+    for (let i = 0; i < numOfPairs; i++) {
+        arrayOfPairs.push(i)
+        arrayOfPairs.push(i)
+    }
+
+    return arrayOfPairs.sort(() => .5 - Math.random());
+}
+
 
 createCards(INITIAL_CARD_COUNT);
