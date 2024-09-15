@@ -1,5 +1,6 @@
 const INITIAL_CARD_COUNT = 12;
 const ROW_NUMBER = 3;
+const CARD_SHOW_TIME = 800;
 
 let cardOne = null; 
 let cardTwo = null;
@@ -59,10 +60,12 @@ function listenToClicks() {
 }
 
 function toggleCard(event) {
-    const card = this.firstElementChild;
-    if (!card.classList.contains('displayCard')) {
-        card.classList.toggle('displayCard');
-        saveCard(card);
+    if (!cardOne || !cardTwo) {
+        const card = this.firstElementChild;
+        if (!card.classList.contains('displayCard')) {
+            card.classList.toggle('displayCard');
+            saveCard(card);
+        }
     }
 }
 
@@ -100,7 +103,7 @@ function checkMatch() {
             setTimeout(() => {
                 closeCards();
                 setCardsNull();
-            }, 800)
+            }, CARD_SHOW_TIME)
         }
     }
 }
