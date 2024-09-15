@@ -28,9 +28,9 @@ function createCardColumn(rowDiv, columnCount) {
 // Create and insert values to cards
 function addCardValues(cardCount) {
     const arrayOfPairs = createValues(cardCount);
-    const cards = document.querySelectorAll('.cardValue');
     let currentIndex = 0;
-    cards.forEach( (card) => {
+    const cardValues = document.querySelectorAll('.cardValue');
+    cardValues.forEach( (card) => {
         card.textContent = arrayOfPairs[currentIndex];
         currentIndex += 1;
     });
@@ -49,8 +49,8 @@ function createValues(cardCount) {
 
 // Toggle cards
 function listenToClicks() {
-    const cards = document.querySelectorAll('.card')
-    cards.forEach( (card) => {
+    const cardContainer = document.querySelectorAll('.card')
+    cardContainer.forEach( (card) => {
         card.addEventListener('click', toggleCard)
     })
 }
@@ -60,5 +60,30 @@ function toggleCard(event) {
     card.toggle('displayCard')
 }
 
+// Game logic
+let cardOne; 
+let cardTwo;
+const REVEAL_TIME = 1000;
+
+function startGame(cardCount) {
+    // display card for a short time
+    toggleAllCards();
+    setTimeout(toggleAllCards, REVEAL_TIME);
+    setTimeout(() => {
+        addCardValues(cardCount)
+    }, REVEAL_TIME);
+
+    listenToClicks();
+}
+
+function toggleAllCards() {
+    const cardValues = document.querySelectorAll('.cardValue');
+    cardValues.forEach( (card) => {
+        card.classList.toggle('displayCard')
+    });
+}
+
 createCards(INITIAL_CARD_COUNT);
-listenToClicks();
+
+const startBtn = document.querySelector('#start');
+startBtn.addEventListener('click', () => startGame(INITIAL_CARD_COUNT));
