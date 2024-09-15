@@ -40,3 +40,35 @@ li>a {
 li>a:hover {
     color: #A5C9CA;
 }
+
+.displayArea {
+    max-width: 100%;
+    background-color: cadetblue;
+    height: 10vh;
+}
+
+.gameWindow {
+    max-width: 100%;
+    background-color: antiquewhite;
+    height: 80vh;
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    border: 10px solid blueviolet;
+}
+
+.row {
+    width: 100%;
+    flex: auto;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.card {
+    width: 150px;
+    height: 80%;
+    background-color: aqua;
+    border-radius: 10px;
+}

@@ -1,4 +1,4 @@
-const INITIAL_CARD_COUNT = 12;
+const INITIAL_CARD_COUNT = 9;
 const ROW_NUMBER = 3;
 
 function createCards(cardCount) {
