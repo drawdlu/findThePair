@@ -1,6 +1,9 @@
 const INITIAL_CARD_COUNT = 12;
 const ROW_NUMBER = 3;
 
+let cardOne = null; 
+let cardTwo = null;
+
 // Render Cards
 function createCards(cardCount) {
     const container = document.querySelector('.container');
@@ -56,24 +59,65 @@ function listenToClicks() {
 }
 
 function toggleCard(event) {
-    const card = this.firstElementChild.classList;
-    card.toggle('displayCard')
+    const card = this.firstElementChild;
+    if (!card.classList.contains('displayCard')) {
+        card.classList.toggle('displayCard');
+        saveCard(card);
+    }
 }
 
 // Game logic
-let cardOne; 
-let cardTwo;
+
 const REVEAL_TIME = 1000;
 
 function startGame(cardCount) {
     // display card for a short time
-    toggleAllCards();
-    setTimeout(toggleAllCards, REVEAL_TIME);
-    setTimeout(() => {
-        addCardValues(cardCount)
-    }, REVEAL_TIME);
+    // toggleAllCards();
+    // setTimeout(toggleAllCards, REVEAL_TIME);
+    // setTimeout(() => {
+    //     addCardValues(cardCount)
+    // }, REVEAL_TIME);
 
     listenToClicks();
+}
+
+
+function saveCard(card) {
+    if (cardOne === null) {
+        cardOne = card;
+    } else {
+        cardTwo = card;
+        checkMatch();
+    }
+}
+
+function checkMatch() {
+    if (cardOne && cardTwo) {
+        if (cardOne.textContent === cardTwo.textContent) {
+            removeClickEvents();
+            setCardsNull();
+        } else {
+            setTimeout(() => {
+                closeCards();
+                setCardsNull();
+            }, 800)
+        }
+    }
+}
+
+function closeCards() {
+    cardOne.classList.toggle('displayCard');
+    cardTwo.classList.toggle('displayCard');
+}
+
+function setCardsNull() {
+    cardOne = null;
+    cardTwo = null;
+}
+
+function removeClickEvents() {
+    cardOne.parentNode.removeEventListener('click', toggleCard);
+    cardTwo.parentNode.removeEventListener('click', toggleCard);
 }
 
 function toggleAllCards() {
@@ -83,7 +127,10 @@ function toggleAllCards() {
     });
 }
 
-createCards(INITIAL_CARD_COUNT);
+function listenToGameButtons() {
+    const startBtn = document.querySelector('#start');
+    startBtn.addEventListener('click', () => startGame(INITIAL_CARD_COUNT));
+}
 
-const startBtn = document.querySelector('#start');
-startBtn.addEventListener('click', () => startGame(INITIAL_CARD_COUNT));
+createCards(INITIAL_CARD_COUNT);
+listenToGameButtons();

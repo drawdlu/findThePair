@@ -85,9 +85,10 @@ li>a:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    visibility: hidden;
+    transition: opacity 1000ms;
+    opacity: 0;
 }
 
 .displayCard {
-    visibility: visible;
+    opacity: 1;
 }
