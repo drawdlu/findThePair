@@ -16,6 +16,9 @@ function createCardColumn(rowDiv, columnCount) {
     for (let i = 0; i < columnCount; i++) {
         const card = document.createElement('div');
         card.className = 'card';
+        const cardValue = document.createElement('div');
+        cardValue.className = 'cardValue';
+        card.appendChild(cardValue);
         rowDiv.appendChild(card);
     }
 }
