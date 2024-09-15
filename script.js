@@ -1,6 +1,7 @@
 const INITIAL_CARD_COUNT = 12;
 const ROW_NUMBER = 3;
 const CARD_SHOW_TIME = 800;
+const TRANSITION_TIME = 1000;
 
 let cardOne = null; 
 let cardTwo = null;
@@ -75,13 +76,12 @@ const REVEAL_TIME = 1000;
 
 function startGame(cardCount) {
     // display card for a short time
-    // toggleAllCards();
-    // setTimeout(toggleAllCards, REVEAL_TIME);
-    // setTimeout(() => {
-    //     addCardValues(cardCount)
-    // }, REVEAL_TIME);
-
-    listenToClicks();
+    toggleAllCards();
+    setTimeout(toggleAllCards, REVEAL_TIME);
+    setTimeout(() => {
+        addCardValues(cardCount)
+        listenToClicks();
+    }, REVEAL_TIME + TRANSITION_TIME);
 }
 
 
