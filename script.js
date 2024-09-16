@@ -3,6 +3,8 @@ const ROW_NUMBER = 3;
 const CARD_SHOW_TIME = 800;
 const TRANSITION_TIME = 1000;
 
+let numOfCards = INITIAL_CARD_COUNT;
+
 let cardOne = null; 
 let cardTwo = null;
 
@@ -132,8 +134,8 @@ function toggleAllCards() {
 
 function listenToGameButtons() {
     const startBtn = document.querySelector('#start');
-    startBtn.addEventListener('click', () => startGame(INITIAL_CARD_COUNT));
+    startBtn.addEventListener('click', () => startGame(numOfCards));
 }
 
-createCards(INITIAL_CARD_COUNT);
+createCards(numOfCards);
 listenToGameButtons();
