@@ -3,8 +3,9 @@ const ROW_NUMBER = 3;
 const CARD_SHOW_TIME = 800;
 const TRANSITION_TIME = 1000;
 
-let numOfCards = INITIAL_CARD_COUNT;
+const startBtn = document.querySelector('#start');
 
+let numOfCards = INITIAL_CARD_COUNT;
 let cardOne = null; 
 let cardTwo = null;
 
@@ -73,7 +74,6 @@ function toggleCard(event) {
 }
 
 // Game logic
-
 const REVEAL_TIME = 1000;
 
 function startGame(cardCount) {
@@ -132,9 +132,11 @@ function toggleAllCards() {
     });
 }
 
-function listenToGameButtons() {
-    const startBtn = document.querySelector('#start');
-    startBtn.addEventListener('click', () => startGame(numOfCards));
+function listenToGameButtons() {    
+    startBtn.addEventListener('click', 
+        () => startGame(numOfCards),
+        {once: true}
+    );
 }
 
 createCards(numOfCards);
