@@ -63,7 +63,7 @@ function createValues(cardCount) {
 }
 
 // Toggle cards
-function listenToClicks() {
+function listenToCardClicks() {
     const cardContainer = document.querySelectorAll('.card')
     cardContainer.forEach( (card) => {
         card.addEventListener('click', toggleCard)
@@ -91,7 +91,7 @@ function startGame(cardCount) {
     }, REVEAL_TIME);
     setTimeout(() => {
         addCardValues(cardCount);
-        listenToClicks();
+        listenToCardClicks();
     }, REVEAL_TIME + TRANSITION_TIME);
     gameTimer();
 }
@@ -167,6 +167,7 @@ function addPoint() {
 function checkScore() {
     if (score === numOfCards / 2) {
         alert('You won!');
+        clearInterval(intervalBar);
     }
 }
 
@@ -204,7 +205,6 @@ let width = INITIAL_WIDTH;
 function updateGameBar(numToRemove) {
     width = ((width.slice(0, -2)) - numToRemove).toFixed(1) + 'px';
     bar.style.width = width;
-    console.log(width)
 }
 
 createCards(numOfCards);
