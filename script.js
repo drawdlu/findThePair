@@ -90,6 +90,7 @@ function startGame(cardCount) {
         addCardValues(cardCount);
         listenToClicks();
     }, REVEAL_TIME + TRANSITION_TIME);
+    gameTimer();
 }
 
 
@@ -162,7 +163,20 @@ function addPoint() {
 
 function checkScore() {
     if (score === numOfCards / 2) {
-        alert('You won');
+        alert('You won!');
+    }
+}
+
+function gameTimer() {
+    setTimeout(endGame , GAME_TIMER);
+}
+
+function endGame() {
+    if (score < numOfCards / 2) {
+        toggleAllCards(SHOW_CARD);
+        alert(`You didn't find all the cards`)
+    } else {
+        alert('You won!')
     }
 }
 
