@@ -45,6 +45,17 @@ li>a:hover {
     max-width: 100%;
     background-color: cadetblue;
     height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.timeBar {
+    width: 90%;
+    height: 15px;
+    background-color: yellow;
+    margin-bottom: 10px;
+    border-radius: 10px;
 }
 
 .gameWindow {
