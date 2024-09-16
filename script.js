@@ -170,12 +170,13 @@ function checkScore() {
     }
 }
 
+let intervalBar;
 function gameTimer() {
     setTimeout(endGame , GAME_TIMER);
     const remPercent = getPercentToSubtract();
-    setInterval( () => {
+    intervalBar = setInterval( () => {
         updateGameBar(remPercent)
-    }, MS_PER_SECOND)
+        }, MS_PER_SECOND);
 }
 
 function getPercentToSubtract() {
@@ -185,8 +186,11 @@ function getPercentToSubtract() {
 function endGame() {
     stillPlaying = false;
     if (score < numOfCards / 2) {
-        toggleAllCards(SHOW_CARD);
-        alert(`You didn't find all the cards`)
+        setTimeout( () => {
+            toggleAllCards(SHOW_CARD);
+            alert(`You didn't find all the cards`);
+            clearInterval(intervalBar);
+        }, MS_PER_SECOND)
     } else {
         alert('You won!')
     }
@@ -200,6 +204,7 @@ let width = INITIAL_WIDTH;
 function updateGameBar(numToRemove) {
     width = ((width.slice(0, -2)) - numToRemove).toFixed(1) + 'px';
     bar.style.width = width;
+    console.log(width)
 }
 
 createCards(numOfCards);
