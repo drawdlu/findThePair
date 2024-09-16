@@ -2,6 +2,8 @@ const INITIAL_CARD_COUNT = 12;
 const ROW_NUMBER = 3;
 const CARD_SHOW_TIME = 800;
 const TRANSITION_TIME = 1000;
+const SHOW_CARD = 'show';
+const HIDE_CARD = 'hide';
 
 const startBtn = document.querySelector('#start');
 
@@ -78,10 +80,12 @@ const REVEAL_TIME = 1000;
 
 function startGame(cardCount) {
     // display card for a short time
-    toggleAllCards();
-    setTimeout(toggleAllCards, REVEAL_TIME);
+    toggleAllCards(SHOW_CARD);
     setTimeout(() => {
-        addCardValues(cardCount)
+        toggleAllCards(HIDE_CARD);
+    }, REVEAL_TIME);
+    setTimeout(() => {
+        addCardValues(cardCount);
         listenToClicks();
     }, REVEAL_TIME + TRANSITION_TIME);
 }
@@ -125,10 +129,19 @@ function removeClickEvents() {
     cardTwo.parentNode.removeEventListener('click', toggleCard);
 }
 
-function toggleAllCards() {
+function toggleAllCards(cardFace) {
     const cardValues = document.querySelectorAll('.cardValue');
     cardValues.forEach( (card) => {
-        card.classList.toggle('displayCard')
+        const cardShown = card.classList.contains('displayCard');
+        if (cardFace === SHOW_CARD) {
+            if (!cardShown) {
+                card.classList.toggle('displayCard')
+            }
+        } else {
+            if (cardShown) {
+                card.classList.toggle('displayCard')
+            }
+        }
     });
 }
 
