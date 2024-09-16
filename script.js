@@ -2,6 +2,7 @@ const INITIAL_CARD_COUNT = 12;
 const ROW_NUMBER = 3;
 const CARD_SHOW_TIME = 800;
 const TRANSITION_TIME = 1000;
+const GAME_TIMER = 60000;
 const SHOW_CARD = 'show';
 const HIDE_CARD = 'hide';
 
@@ -10,6 +11,7 @@ const startBtn = document.querySelector('#start');
 let numOfCards = INITIAL_CARD_COUNT;
 let cardOne = null; 
 let cardTwo = null;
+let score = 0;
 
 // Render Cards
 function createCards(cardCount) {
@@ -105,6 +107,8 @@ function checkMatch() {
         if (cardOne.textContent === cardTwo.textContent) {
             removeClickEvents();
             setCardsNull();
+            addPoint();
+            setTimeout(checkScore, TRANSITION_TIME);
         } else {
             setTimeout(() => {
                 closeCards();
@@ -150,6 +154,16 @@ function listenToGameButtons() {
         () => startGame(numOfCards),
         {once: true}
     );
+}
+
+function addPoint() {
+    score += 1;
+}
+
+function checkScore() {
+    if (score === numOfCards / 2) {
+        alert('You won');
+    }
 }
 
 createCards(numOfCards);
