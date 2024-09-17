@@ -2,13 +2,14 @@ const INITIAL_CARD_COUNT = 12;
 const ROW_NUMBER = 3;
 const CARD_SHOW_TIME = 800;
 const TRANSITION_TIME = 1000;
-const GAME_TIMER = 120000;
+const GAME_TIMER = 10000;
 const SHOW_CARD = 'show';
 const HIDE_CARD = 'hide';
 const BAR_WIDTH = 90;
 const MS_PER_SECOND = 1000;
 
 let gameInSession = false;
+let gameInitialStart = false;
 let numOfCards = INITIAL_CARD_COUNT;
 let cardOne = null; 
 let cardTwo = null;
@@ -86,6 +87,7 @@ const REVEAL_TIME = 1000;
 function startGame(cardCount) {
     // display card for a short time
     gameInSession = true;
+    gameInitialStart = true;
     toggleAllCards(SHOW_CARD);
     setTimeout(() => {
         toggleAllCards(HIDE_CARD);
@@ -94,7 +96,8 @@ function startGame(cardCount) {
         addCardValues(cardCount);
         listenToCardClicks();
     }, REVEAL_TIME + TRANSITION_TIME);
-    gameTimer();
+    gameTimer(GAME_TIMER);
+    updateBar();
 }
 
 
@@ -166,8 +169,19 @@ function listenToGameButtons() {
     pauseBtn.addEventListener('click', pauseGame);
 }
 
+let timePaused;
+let gameRunningTime = 0; 
 function pauseGame() {
-    gameInSession = !gameInSession;
+    if (gameInitialStart) {
+        if (gameInSession) {
+            timePaused = (new Date()).getTime();
+            gameRunningTime = gameRunningTime + (timePaused - timeAtStart);
+            clearTimeout(currGameTime);
+        } else {
+            gameTimer(GAME_TIMER - gameRunningTime);
+        }
+        gameInSession = !gameInSession;
+    }
 }
 
 function addPoint() {
@@ -183,12 +197,19 @@ function checkScore() {
 function gameWon() {
     gameInSession = false;
     clearInterval(intervalBar);
+    pauseBtn.removeEventListener('click', pauseGame);
     alert('You won!');
 }
 
 let intervalBar;
-function gameTimer() {
-    setTimeout(endGame , GAME_TIMER);
+let currGameTime; 
+let timeAtStart;
+function gameTimer(time) {
+    timeAtStart = (new Date()).getTime();
+    currGameTime = setTimeout(endGame , time);
+}
+
+function updateBar() {
     const remPercent = getPercentToSubtract();
     intervalBar = setInterval( () => {
         updateGameBar(remPercent)
@@ -201,6 +222,7 @@ function getPercentToSubtract() {
 
 function endGame() {
     gameInSession = false;
+    pauseBtn.removeEventListener('click', pauseGame);
     if (score < numOfCards / 2) {
         setTimeout( () => {
             toggleAllCards(SHOW_CARD);
@@ -212,7 +234,6 @@ function endGame() {
 
 const bar = document.querySelector('.timeBar');
 const INITIAL_WIDTH = window.getComputedStyle(bar).width;
-
 let width = INITIAL_WIDTH;
 
 function updateGameBar(numToRemove) {
