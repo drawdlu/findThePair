@@ -2,7 +2,7 @@ const INITIAL_CARD_COUNT = 12;
 const ROW_NUMBER = 3;
 const CARD_SHOW_TIME = 800;
 const TRANSITION_TIME = 1000;
-const GAME_TIMER = 60000;
+const GAME_TIMER = 30000;
 const SHOW_CARD = 'show';
 const HIDE_CARD = 'hide';
 const BAR_WIDTH = 90;
@@ -166,8 +166,9 @@ function addPoint() {
 
 function checkScore() {
     if (score === numOfCards / 2) {
-        alert('You won!');
+        stillPlaying = false;
         clearInterval(intervalBar);
+        alert('You won!');
     }
 }
 
@@ -192,8 +193,6 @@ function endGame() {
             alert(`You didn't find all the cards`);
             clearInterval(intervalBar);
         }, MS_PER_SECOND)
-    } else {
-        alert('You won!')
     }
 }
 
