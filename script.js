@@ -176,10 +176,14 @@ function addPoint() {
 
 function checkScore() {
     if (score === numOfCards / 2) {
-        gameInSession = false;
-        clearInterval(intervalBar);
-        alert('You won!');
+        gameWon();
     }
+}
+
+function gameWon() {
+    gameInSession = false;
+    clearInterval(intervalBar);
+    alert('You won!');
 }
 
 let intervalBar;
@@ -212,8 +216,10 @@ const INITIAL_WIDTH = window.getComputedStyle(bar).width;
 let width = INITIAL_WIDTH;
 
 function updateGameBar(numToRemove) {
-    width = ((width.slice(0, -2)) - numToRemove).toFixed(1) + 'px';
-    bar.style.width = width;
+    if (gameInSession) {
+        width = ((width.slice(0, -2)) - numToRemove).toFixed(1) + 'px';
+        bar.style.width = width;
+    }
 }
 
 createCards(numOfCards);
