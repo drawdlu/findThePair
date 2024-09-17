@@ -2,15 +2,13 @@ const INITIAL_CARD_COUNT = 12;
 const ROW_NUMBER = 3;
 const CARD_SHOW_TIME = 800;
 const TRANSITION_TIME = 1000;
-const GAME_TIMER = 30000;
+const GAME_TIMER = 120000;
 const SHOW_CARD = 'show';
 const HIDE_CARD = 'hide';
 const BAR_WIDTH = 90;
 const MS_PER_SECOND = 1000;
 
-const startBtn = document.querySelector('#start');
-
-let stillPlaying = true;
+let gameInSession = false;
 let numOfCards = INITIAL_CARD_COUNT;
 let cardOne = null; 
 let cardTwo = null;
@@ -71,11 +69,13 @@ function listenToCardClicks() {
 }
 
 function toggleCard(event) {
-    if (!cardOne || !cardTwo) {
-        const card = this.firstElementChild;
-        if (!card.classList.contains('displayCard')) {
-            card.classList.toggle('displayCard');
-            saveCard(card);
+    if (gameInSession) {
+        if (!cardOne || !cardTwo) {
+            const card = this.firstElementChild;
+            if (!card.classList.contains('displayCard')) {
+                card.classList.toggle('displayCard');
+                saveCard(card);
+            }
         }
     }
 }
@@ -85,6 +85,7 @@ const REVEAL_TIME = 1000;
 
 function startGame(cardCount) {
     // display card for a short time
+    gameInSession = true;
     toggleAllCards(SHOW_CARD);
     setTimeout(() => {
         toggleAllCards(HIDE_CARD);
@@ -153,11 +154,20 @@ function toggleAllCards(cardFace) {
     });
 }
 
+const startBtn = document.querySelector('#start');
+const pauseBtn = document.querySelector('#pause');
+
 function listenToGameButtons() {    
     startBtn.addEventListener('click', 
         () => startGame(numOfCards),
         {once: true}
     );
+
+    pauseBtn.addEventListener('click', pauseGame);
+}
+
+function pauseGame() {
+    gameInSession = !gameInSession;
 }
 
 function addPoint() {
@@ -166,7 +176,7 @@ function addPoint() {
 
 function checkScore() {
     if (score === numOfCards / 2) {
-        stillPlaying = false;
+        gameInSession = false;
         clearInterval(intervalBar);
         alert('You won!');
     }
@@ -186,7 +196,7 @@ function getPercentToSubtract() {
 }
 
 function endGame() {
-    stillPlaying = false;
+    gameInSession = false;
     if (score < numOfCards / 2) {
         setTimeout( () => {
             toggleAllCards(SHOW_CARD);
