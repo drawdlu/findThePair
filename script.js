@@ -69,12 +69,14 @@ function listenToCardClicks() {
     })
 }
 
+const selectAudio = new Audio("assets/select.wav");
 function toggleCard(event) {
     if (gameInSession) {
         if (!cardOne || !cardTwo) {
             const card = this.firstElementChild;
             if (!card.classList.contains('displayCard')) {
                 card.classList.toggle('displayCard');
+                selectAudio.play();
                 saveCard(card);
             }
         }
