@@ -56,7 +56,7 @@ li>a:hover {
     background-color: yellow;
     margin-bottom: 10px;
     border-radius: 10px;
-    transition: 1000ms linear;
+    transition: 100ms linear;
 }
 
 .gameWindow {

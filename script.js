@@ -2,11 +2,10 @@ const INITIAL_CARD_COUNT = 12;
 const ROW_NUMBER = 3;
 const CARD_SHOW_TIME = 800;
 const TRANSITION_TIME = 1000;
-const GAME_TIMER = 10000;
+const GAME_TIMER = 30000;
 const SHOW_CARD = 'show';
 const HIDE_CARD = 'hide';
-const BAR_WIDTH = 90;
-const MS_PER_SECOND = 1000;
+const BAR_SHRINK_TIME = 105;
 
 let gameInSession = false;
 let gameInitialStart = false;
@@ -97,9 +96,9 @@ function startGame(cardCount) {
     setTimeout(() => {
         addCardValues(cardCount);
         listenToCardClicks();
+        gameTimer(GAME_TIMER);
+        updateBar();
     }, REVEAL_TIME + TRANSITION_TIME);
-    gameTimer(GAME_TIMER);
-    updateBar();
 }
 
 
@@ -176,8 +175,8 @@ let gameRunningTime = 0;
 function pauseGame() {
     if (gameInitialStart) {
         if (gameInSession) {
-            clearTimeout(currGameTime);
             clearInterval(intervalBar);
+            clearTimeout(currGameTime);
             timePaused = (new Date()).getTime();
             gameRunningTime = gameRunningTime + (timePaused - timeAtStart);
         } else {
@@ -217,11 +216,11 @@ function updateBar() {
     const remPercent = getPercentToSubtract();
     intervalBar = setInterval( () => {
         updateGameBar(remPercent)
-        }, MS_PER_SECOND);
+        }, BAR_SHRINK_TIME);
 }
 
 function getPercentToSubtract() {
-    return (INITIAL_WIDTH.slice(0, -2) / (GAME_TIMER / MS_PER_SECOND)).toFixed(1)
+    return (INITIAL_WIDTH.slice(0, -2) / (GAME_TIMER / BAR_SHRINK_TIME))
 }
 
 function endGame() {
@@ -232,7 +231,7 @@ function endGame() {
             toggleAllCards(SHOW_CARD);
             alert(`You didn't find all the cards`);
             clearInterval(intervalBar);
-        }, MS_PER_SECOND)
+        }, TRANSITION_TIME)
     }
 }
 
