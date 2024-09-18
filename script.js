@@ -176,11 +176,13 @@ let gameRunningTime = 0;
 function pauseGame() {
     if (gameInitialStart) {
         if (gameInSession) {
+            clearTimeout(currGameTime);
+            clearInterval(intervalBar);
             timePaused = (new Date()).getTime();
             gameRunningTime = gameRunningTime + (timePaused - timeAtStart);
-            clearTimeout(currGameTime);
         } else {
             gameTimer(GAME_TIMER - gameRunningTime);
+            updateBar();
         }
         gameInSession = !gameInSession;
     }
@@ -245,5 +247,16 @@ function updateGameBar(numToRemove) {
     }
 }
 
+function checkWindowClose() {
+    window.addEventListener('beforeunload', (event) => {
+        if (gameInSession) {
+            pauseGame();
+            event.preventDefault();
+            return "Are you sure?";
+        }
+    });
+}
+
 createCards(numOfCards);
 listenToGameButtons();
+checkWindowClose();
