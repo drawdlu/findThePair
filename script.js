@@ -197,7 +197,9 @@ function checkScore() {
     }
 }
 
+const winningSound = new Audio("assets/winRound.wav");
 function gameWon() {
+    winningSound.play();
     gameInSession = false;
     clearInterval(intervalBar);
     pauseBtn.removeEventListener('click', pauseGame);
@@ -223,12 +225,14 @@ function getPercentToSubtract() {
     return (INITIAL_WIDTH.slice(0, -2) / (GAME_TIMER / BAR_SHRINK_TIME))
 }
 
+const loseGameSound = new Audio("assets/gameOver.wav");
 function endGame() {
     gameInSession = false;
     pauseBtn.removeEventListener('click', pauseGame);
     if (score < numOfCards / 2) {
         setTimeout( () => {
             toggleAllCards(SHOW_CARD);
+            loseGameSound.play();
             alert(`You didn't find all the cards`);
             clearInterval(intervalBar);
         }, TRANSITION_TIME)
