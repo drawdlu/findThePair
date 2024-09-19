@@ -231,12 +231,10 @@ function endGame() {
     gameInSession = false;
     pauseBtn.removeEventListener('click', pauseGame);
     if (score < numOfCards / 2) {
-        setTimeout( () => {
-            toggleAllCards(SHOW_CARD);
-            loseGameSound.play();
-            alert(`You didn't find all the cards`);
-            clearInterval(intervalBar);
-        }, TRANSITION_TIME)
+        toggleAllCards(SHOW_CARD);
+        loseGameSound.play();
+        alert(`You didn't find all the cards`);
+        clearInterval(intervalBar);
     }
 }
 
