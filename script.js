@@ -75,6 +75,7 @@ function toggleCard(event) {
             const card = this.firstElementChild;
             if (!card.classList.contains('displayCard')) {
                 card.classList.toggle('displayCard');
+                selectAudio.currentTime = 0;
                 selectAudio.play();
                 saveCard(card);
             }
