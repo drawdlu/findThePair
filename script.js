@@ -214,16 +214,15 @@ function checkScore() {
     }
 }
 
-const winText = document.querySelector('.winText');
+
 const winningSound = new Audio("assets/winRound.wav");
 function gameWon() {
     winningSound.play();
     gameInSession = false;
     clearInterval(intervalBar);
     pauseBtn.removeEventListener('click', pauseGame);
-    winText.style.display = 'block'
-    overlay.removeAttribute('style');
-    overlay.classList.remove('hideOverlay');
+    const winText = document.querySelector('.alertText.win');
+    showMessage(winText);
 }
 
 let intervalBar;
@@ -245,6 +244,7 @@ function getPercentToSubtract() {
     return (INITIAL_WIDTH.slice(0, -2) / (GAME_TIMER / BAR_SHRINK_TIME))
 }
 
+
 const loseGameSound = new Audio("assets/gameOver.wav");
 function endGame() {
     gameInSession = false;
@@ -252,9 +252,16 @@ function endGame() {
     if (score < numOfCards / 2) {
         toggleAllCards(SHOW_CARD);
         loseGameSound.play();
-        alert(`You didn't find all the cards`);
         clearInterval(intervalBar);
+        const loseText = document.querySelector('.alertText.lose');
+        showMessage(loseText);
     }
+}
+
+function showMessage(text) {
+    text.style.display = 'block';
+    overlay.removeAttribute('style');
+    overlay.classList.remove('hideOverlay');
 }
 
 const bar = document.querySelector('.timeBar');
