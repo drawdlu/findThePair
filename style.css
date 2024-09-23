@@ -119,19 +119,18 @@ li>a:hover {
     width: 100%;
     height: 100%;
     top: 0;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0,0,0,0.8);
     z-index: 2;
     cursor: crosshair;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .overlayText {
-    position: absolute;
-    top: 50%;
-    left: 50%;
+    max-width: 500px;
     font-size: 18px;
     color: white;
-    transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%,-50%);
     opacity: 1;
     display: flex;
     flex-direction: column;
@@ -168,4 +167,10 @@ li>a:hover {
     border-radius: 10px;
     background-color: #2C3333;
     color: white;
+}
+
+.winText {
+    color: white;
+    font-size: 50px;
+    display: none;
 }

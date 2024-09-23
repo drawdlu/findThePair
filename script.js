@@ -86,10 +86,11 @@ function toggleCard(event) {
 // Game logic
 const REVEAL_TIME = 1000;
 
+const overlay = document.querySelector('.overlay');
+
 function startGame(cardCount) {
     // remove overlay from display
-    const overlay = startBtn.parentNode.parentNode.parentNode;
-    overlay.classList.add('hideOverlay');
+    removeOverlay();
 
     // display card for a short time
     gameInSession = true;
@@ -109,6 +110,12 @@ function startGame(cardCount) {
         gameTimer(GAME_TIMER);
         updateBar();
     }, REVEAL_TIME + TRANSITION_TIME * 2);
+}
+
+function removeOverlay() {
+    const overlayText = document.querySelector('.overlayText');
+    overlay.classList.add('hideOverlay');
+    overlayText.style.display = 'none';
 }
 
 
@@ -207,13 +214,16 @@ function checkScore() {
     }
 }
 
+const winText = document.querySelector('.winText');
 const winningSound = new Audio("assets/winRound.wav");
 function gameWon() {
     winningSound.play();
     gameInSession = false;
     clearInterval(intervalBar);
     pauseBtn.removeEventListener('click', pauseGame);
-    alert('You won!');
+    winText.style.display = 'block'
+    overlay.removeAttribute('style');
+    overlay.classList.remove('hideOverlay');
 }
 
 let intervalBar;
