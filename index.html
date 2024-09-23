@@ -14,16 +14,34 @@
             </div>
             <div class="linkDiv">
                 <ul class="navLinks">
-                    <li><a href="#" id="start">Start</a></li>
                     <li><a href="#" id="pause">Pause</a></li>
                     <li><a href="#">Restart</a></li>
                 </ul>
             </div>
         </div>
-        <div class="displayArea">
-            <div class="timeBar"></div>
-        </div>
-        <div class="container gameWindow">
+        <div class="overlayContainer">
+            <div class="overlay">
+                <div class="overlayText">
+                    <div class="instructions">
+                        <h3>Here's how to play: </h3>
+                        <ol>
+                            <li><strong>Choose a card.</strong> Click on any card to turn it face up.</li>
+                            <li><strong>Find its match.</strong> Look for another card with the same picture.</li>
+                            <li><strong>Try to remember.</strong> If you find a match, both cards will stay face up. If not, they'll be turned face down again.</li>
+                            <li><strong>Keep going.</strong> Continue until you've matched all the pairs.</li>
+                        </ol>
+                        <p>The goal is to find all the pairs as quickly as possible. It's a fun way to test your memory and concentration!</p>
+                    </div>
+                    <div class="startButton">
+                        <button id="start">Start</button>
+                    </div>
+                </div>
+            </div>
+            <div class="displayArea">
+                <div class="timeBar"></div>
+            </div>
+            <div class="container gameWindow">
+            </div>
         </div>
     </body>
 </html>

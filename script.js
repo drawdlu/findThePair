@@ -87,19 +87,28 @@ function toggleCard(event) {
 const REVEAL_TIME = 1000;
 
 function startGame(cardCount) {
+    // remove overlay from display
+    const overlay = startBtn.parentNode.parentNode.parentNode;
+    overlay.classList.add('hideOverlay');
+
     // display card for a short time
     gameInSession = true;
     gameInitialStart = true;
-    toggleAllCards(SHOW_CARD);
-    setTimeout(() => {
-        toggleAllCards(HIDE_CARD);
-    }, REVEAL_TIME);
+    setTimeout( () => {
+        overlay.style.height = '0';
+        toggleAllCards(SHOW_CARD);
+        setTimeout(() => {
+            toggleAllCards(HIDE_CARD);
+        }, REVEAL_TIME);
+    
+    }, TRANSITION_TIME)
+
     setTimeout(() => {
         addCardValues(cardCount);
         listenToCardClicks();
         gameTimer(GAME_TIMER);
         updateBar();
-    }, REVEAL_TIME + TRANSITION_TIME);
+    }, REVEAL_TIME + TRANSITION_TIME * 2);
 }
 
 
