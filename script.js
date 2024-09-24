@@ -12,6 +12,8 @@ let gameInitialStart = false;
 let numOfCards = INITIAL_CARD_COUNT;
 let cardOne = null; 
 let cardTwo = null;
+let cardOneDigit = null;
+let cardTwoDigit = null;
 let score = 0;
 
 // Render Cards
@@ -44,7 +46,12 @@ function addCardValues(cardCount) {
     let currentIndex = 0;
     const cardValues = document.querySelectorAll('.cardValue');
     cardValues.forEach( (card) => {
-        card.textContent = arrayOfPairs[currentIndex];
+        // remove previous images
+        (Array.from(card.children)).forEach ( (child) => child.remove());
+
+        const cardImage = document.createElement('img');
+        cardImage.src = "assets/cards/" + arrayOfPairs[currentIndex] + ".png";
+        card.appendChild(cardImage);
         currentIndex += 1;
     });
 }
@@ -52,7 +59,7 @@ function addCardValues(cardCount) {
 function createValues(cardCount) {
     const numOfPairs = cardCount / 2;
     const arrayOfPairs = [];
-    for (let i = 0; i < numOfPairs; i++) {
+    for (let i = 1; i <= numOfPairs; i++) {
         arrayOfPairs.push(i)
         arrayOfPairs.push(i)
     }
@@ -120,17 +127,23 @@ function removeOverlay() {
 
 
 function saveCard(card) {
+    // extract number from filename
+    let reg = /\/(..?)\.png/; 
+    let num = reg.exec(card.firstElementChild.src)[1];
+
     if (cardOne === null) {
         cardOne = card;
+        cardOneDigit = num;
     } else {
         cardTwo = card;
+        cardTwoDigit = num;
         checkMatch();
     }
 }
 
 function checkMatch() {
     if (cardOne && cardTwo) {
-        if (cardOne.textContent === cardTwo.textContent) {
+        if (cardOneDigit === cardTwoDigit) {
             removeClickEvents();
             setCardsNull();
             addPoint();
