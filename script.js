@@ -68,7 +68,7 @@ function listenToCardClicks() {
     })
 }
 
-const selectAudio = new Audio("assets/select.wav");
+const selectAudio = new Audio("assets/sounds/select.wav");
 function toggleCard(event) {
     if (gameInSession) {
         if (!cardOne || !cardTwo) {
@@ -215,7 +215,7 @@ function checkScore() {
 }
 
 
-const winningSound = new Audio("assets/winRound.wav");
+const winningSound = new Audio("assets/sounds/winRound.wav");
 function gameWon() {
     winningSound.play();
     gameInSession = false;
@@ -245,7 +245,7 @@ function getPercentToSubtract() {
 }
 
 
-const loseGameSound = new Audio("assets/gameOver.wav");
+const loseGameSound = new Audio("assets/sounds/gameOver.wav");
 function endGame() {
     gameInSession = false;
     pauseBtn.removeEventListener('click', pauseGame);
