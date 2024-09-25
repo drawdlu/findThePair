@@ -250,13 +250,11 @@ function roundWon() {
     toggleMessage(winText);
     overlay.classList.toggle('zeroHeight');
     const nextBtn = document.querySelector('#next');
-    nextBtn.addEventListener('click', (event) => {
-        startNextRound(event, winText), 
-        {once: true};
-    });
+    nextBtn.addEventListener('click', startNextRound);
 }
 
-function startNextRound(event, winText) {
+function startNextRound() {
+    const winText = document.querySelector('.alertText.win');
     winText.classList.toggle('alertFlex');
     removeCards();
 
@@ -267,10 +265,6 @@ function startNextRound(event, winText) {
     score = 0;
     numOfCards += 6;
     createCards();
-    startRound();
-}
-
-function startRound() {
     startGame();
 }
 
@@ -316,7 +310,7 @@ function getPercentToSubtract() {
 
 const loseGameSound = new Audio("assets/sounds/gameOver.wav");
 function endGame() {
-    gameInSession = false;
+    gameInSession = falYOUse;
     if (score < numOfCards / 2) {
         toggleAllCards(SHOW_CARD);
         loseGameSound.play();
@@ -335,7 +329,7 @@ function toggleMessage(text) {
 function checkWindowClose() {
     window.addEventListener('beforeunload', (event) => {
         if (gameInSession) {
-            pauseGame();
+            pauseGame();YOU
             event.preventDefault();
             return "Are you sure?";
         }
