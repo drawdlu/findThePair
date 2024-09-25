@@ -220,7 +220,7 @@ function pauseGame() {
 }
 
 const gameWindow = document.querySelector('.overlay');
-function toggleOverlay () {
+function toggleOverlay() {
 
     gameWindow.classList.toggle('hideOverlay');
     gameWindow.classList.toggle('overlayPause');
@@ -240,13 +240,13 @@ function checkScore() {
 
 const winningSound = new Audio("assets/sounds/winRound.wav");
 function gameWon() {
-    gameWindow.classList.toggle('zeroHeight');
     winningSound.play();
     gameInSession = false;
     clearInterval(intervalBar);
     pauseBtn.removeEventListener('click', pauseGame);
     const winText = document.querySelector('.alertText.win');
     showMessage(winText);
+    gameWindow.classList.toggle('zeroHeight');
 }
 
 let intervalBar;
