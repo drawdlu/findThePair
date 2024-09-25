@@ -15,6 +15,7 @@ let cardTwo = null;
 let cardOneDigit = null;
 let cardTwoDigit = null;
 let score = 0;
+let round = 0;
 
 // Render Cards
 function createCards(cardCount) {
@@ -85,6 +86,9 @@ function toggleCard(event) {
                 selectAudio.currentTime = 0;
                 selectAudio.play();
                 saveCard(card);
+
+                // TEST
+                gameWon();
             }
         }
     }
@@ -243,6 +247,7 @@ function gameWon() {
     winningSound.play();
     gameInSession = false;
     clearInterval(intervalBar);
+    clearTimeout(currGameTime);
     pauseBtn.removeEventListener('click', pauseGame);
     const winText = document.querySelector('.alertText.win');
     showMessage(winText);
@@ -284,7 +289,7 @@ function endGame() {
 }
 
 function showMessage(text) {
-    text.style.display = 'block';
+    text.classList.toggle('alertFlex');
     overlay.removeAttribute('style');
     overlay.classList.remove('hideOverlay');
 }
