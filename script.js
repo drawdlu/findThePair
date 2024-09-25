@@ -1,5 +1,5 @@
 const INITIAL_CARD_COUNT = 12;
-const ROW_NUMBER = 3;
+const ROW_NUMBER = 4;
 const CARD_SHOW_TIME = 800;
 const TRANSITION_TIME = 1000;
 const GAME_TIMER = 120000;
