@@ -2,10 +2,11 @@ const INITIAL_CARD_COUNT = 12;
 const ROW_NUMBER = 3;
 const CARD_SHOW_TIME = 800;
 const TRANSITION_TIME = 1000;
-const GAME_TIMER = 90000;
+const GAME_TIMER = 120000;
 const SHOW_CARD = 'show';
 const HIDE_CARD = 'hide';
 const BAR_SHRINK_TIME = 105;
+const MAX_ROUNDS = 6;
 
 let gameInSession = false;
 let gameInitialStart = false;
@@ -15,6 +16,7 @@ let cardTwo = null;
 let cardOneDigit = null;
 let cardTwoDigit = null;
 let score = 0;
+let round = 0;
 
 // Render Cards
 function createCards() {
@@ -98,6 +100,7 @@ const REVEAL_TIME = 1000;
 const overlay = document.querySelector('.overlay');
 
 function startGame() {
+    round += 1;
     // remove overlay from display
     removeOverlay();
 
@@ -112,7 +115,6 @@ function startGame() {
     }, TRANSITION_TIME)
 
     setTimeout(() => {
-        addCardValues(numOfCards);
         listenToCardClicks();
         gameTimer(GAME_TIMER);
         updateBar();
@@ -126,7 +128,6 @@ function removeOverlay() {
     overlay.classList.add('hideOverlay');
     overlayText.style.display = 'none';
 }
-
 
 function saveCard(card) {
     // extract number from filename
@@ -310,7 +311,7 @@ function getPercentToSubtract() {
 
 const loseGameSound = new Audio("assets/sounds/gameOver.wav");
 function endGame() {
-    gameInSession = falYOUse;
+    gameInSession = false;
     if (score < numOfCards / 2) {
         toggleAllCards(SHOW_CARD);
         loseGameSound.play();
@@ -328,8 +329,10 @@ function toggleMessage(text) {
 
 function checkWindowClose() {
     window.addEventListener('beforeunload', (event) => {
-        if (gameInSession) {
-            pauseGame();YOU
+        if (gameInitialStart) {
+            if (gameInSession) {
+                pauseGame();
+            }
             event.preventDefault();
             return "Are you sure?";
         }
