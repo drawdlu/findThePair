@@ -2,7 +2,7 @@ const INITIAL_CARD_COUNT = 12;
 const ROW_NUMBER = 3;
 const CARD_SHOW_TIME = 800;
 const TRANSITION_TIME = 1000;
-const GAME_TIMER = 30000;
+const GAME_TIMER = 60000;
 const SHOW_CARD = 'show';
 const HIDE_CARD = 'hide';
 const BAR_SHRINK_TIME = 105;
@@ -15,19 +15,18 @@ let cardTwo = null;
 let cardOneDigit = null;
 let cardTwoDigit = null;
 let score = 0;
-let round = 0;
 
 // Render Cards
-function createCards(cardCount) {
+function createCards() {
     const container = document.querySelector('.container');
     for (let i = 0; i < ROW_NUMBER; i++) {
         const row = document.createElement('div')
         row.className = 'row';
-        const columnCount = cardCount / ROW_NUMBER;
+        const columnCount = numOfCards / ROW_NUMBER;
         createCardColumn(row, columnCount);
         container.appendChild(row);
     }
-    addCardValues(cardCount);
+    addCardValues();
 }
 
 function createCardColumn(rowDiv, columnCount) {
@@ -42,8 +41,8 @@ function createCardColumn(rowDiv, columnCount) {
 }
 
 // Create and insert values to cards
-function addCardValues(cardCount) {
-    const arrayOfPairs = createValues(cardCount);
+function addCardValues() {
+    const arrayOfPairs = createValues(numOfCards);
     let currentIndex = 0;
     const cardValues = document.querySelectorAll('.cardValue');
     cardValues.forEach( (card) => {
@@ -57,9 +56,11 @@ function addCardValues(cardCount) {
     });
 }
 
-function createValues(cardCount) {
-    const numOfPairs = cardCount / 2;
+
+function createValues() {
     const arrayOfPairs = [];
+    const numOfPairs = numOfCards / 2;
+
     for (let i = 1; i <= numOfPairs; i++) {
         arrayOfPairs.push(i)
         arrayOfPairs.push(i)
@@ -86,9 +87,6 @@ function toggleCard(event) {
                 selectAudio.currentTime = 0;
                 selectAudio.play();
                 saveCard(card);
-
-                // TEST
-                gameWon();
             }
         }
     }
@@ -99,7 +97,7 @@ const REVEAL_TIME = 1000;
 
 const overlay = document.querySelector('.overlay');
 
-function startGame(cardCount) {
+function startGame() {
     // remove overlay from display
     removeOverlay();
 
@@ -114,7 +112,7 @@ function startGame(cardCount) {
     }, TRANSITION_TIME)
 
     setTimeout(() => {
-        addCardValues(cardCount);
+        addCardValues(numOfCards);
         listenToCardClicks();
         gameTimer(GAME_TIMER);
         updateBar();
@@ -223,12 +221,11 @@ function pauseGame() {
     }
 }
 
-const gameWindow = document.querySelector('.overlay');
 function toggleOverlay() {
 
-    gameWindow.classList.toggle('hideOverlay');
-    gameWindow.classList.toggle('overlayPause');
-    gameWindow.classList.toggle('zeroHeight');
+    overlay.classList.toggle('hideOverlay');
+    overlay.classList.toggle('overlayPause');
+    overlay.classList.toggle('zeroHeight');
 }
 
 function addPoint() {
@@ -237,21 +234,52 @@ function addPoint() {
 
 function checkScore() {
     if (score === numOfCards / 2) {
-        gameWon();
+        roundWon();
     }
 }
 
 
 const winningSound = new Audio("assets/sounds/winRound.wav");
-function gameWon() {
+const nextBtn = document.querySelector('#next');
+function roundWon() {
     winningSound.play();
     gameInSession = false;
     clearInterval(intervalBar);
     clearTimeout(currGameTime);
-    pauseBtn.removeEventListener('click', pauseGame);
     const winText = document.querySelector('.alertText.win');
-    showMessage(winText);
-    gameWindow.classList.toggle('zeroHeight');
+    toggleMessage(winText);
+    overlay.classList.toggle('zeroHeight');
+    const nextBtn = document.querySelector('#next');
+    nextBtn.addEventListener('click', (event) => {
+        startNextRound(event, winText), 
+        {once: true};
+    });
+}
+
+function startNextRound(event, winText) {
+    winText.classList.toggle('alertFlex');
+    removeCards();
+
+    // reset bar
+    width = INITIAL_WIDTH;
+    bar.removeAttribute('style');
+
+    score = 0;
+    numOfCards += 6;
+    createCards();
+    startRound();
+}
+
+function startRound() {
+    startGame();
+}
+
+function removeCards() {
+    const gameWindow = document.querySelector('.gameWindow');
+    const cards = gameWindow.children;
+    Array.from(cards).forEach( (card) => {
+        card.remove();
+    })
 }
 
 let intervalBar;
@@ -262,11 +290,23 @@ function gameTimer(time) {
     currGameTime = setTimeout(endGame , time);
 }
 
+const bar = document.querySelector('.timeBar');
+const INITIAL_WIDTH = window.getComputedStyle(bar).width;
+let width = INITIAL_WIDTH;
 function updateBar() {
     const remPercent = getPercentToSubtract();
     intervalBar = setInterval( () => {
         updateGameBar(remPercent)
         }, BAR_SHRINK_TIME);
+}
+
+
+
+function updateGameBar(numToRemove) {
+    if (gameInSession) {
+        width = ((width.slice(0, -2)) - numToRemove).toFixed(1) + 'px';
+        bar.style.width = width;
+    }
 }
 
 function getPercentToSubtract() {
@@ -277,32 +317,19 @@ function getPercentToSubtract() {
 const loseGameSound = new Audio("assets/sounds/gameOver.wav");
 function endGame() {
     gameInSession = false;
-    pauseBtn.removeEventListener('click', pauseGame);
     if (score < numOfCards / 2) {
         toggleAllCards(SHOW_CARD);
         loseGameSound.play();
         clearInterval(intervalBar);
         const loseText = document.querySelector('.alertText.lose');
-        showMessage(loseText);
-        gameWindow.classList.toggle('zeroHeight');
+        toggleMessage(loseText);
+        overlay.classList.toggle('zeroHeight');
     }
 }
 
-function showMessage(text) {
+function toggleMessage(text) {
     text.classList.toggle('alertFlex');
-    overlay.removeAttribute('style');
-    overlay.classList.remove('hideOverlay');
-}
-
-const bar = document.querySelector('.timeBar');
-const INITIAL_WIDTH = window.getComputedStyle(bar).width;
-let width = INITIAL_WIDTH;
-
-function updateGameBar(numToRemove) {
-    if (gameInSession) {
-        width = ((width.slice(0, -2)) - numToRemove).toFixed(1) + 'px';
-        bar.style.width = width;
-    }
+    overlay.classList.toggle('hideOverlay');
 }
 
 function checkWindowClose() {
@@ -316,11 +343,11 @@ function checkWindowClose() {
 }
 
 // Pause when changing tabs
-window.addEventListener('blur', () => {
-    if (gameInSession) {
-        pauseGame();
-    }
-});
+// window.addEventListener('blur', () => {
+//     if (gameInSession) {
+//         pauseGame();
+//     }
+// });
 
 createCards(numOfCards);
 listenToGameButtons();
