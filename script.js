@@ -6,7 +6,7 @@ const GAME_TIMER = 120000;
 const SHOW_CARD = 'show';
 const HIDE_CARD = 'hide';
 const BAR_SHRINK_TIME = 105;
-const MAX_ROUNDS = 6;
+const MAX_ROUNDS = 5;
 
 let gameInSession = false;
 let gameInitialStart = false;
@@ -89,6 +89,9 @@ function toggleCard(event) {
                 selectAudio.currentTime = 0;
                 selectAudio.play();
                 saveCard(card);
+
+                // TEST
+                roundWon();
             }
         }
     }
@@ -247,11 +250,20 @@ function roundWon() {
     gameInSession = false;
     clearInterval(intervalBar);
     clearTimeout(currGameTime);
-    const winText = document.querySelector('.alertText.win');
-    toggleMessage(winText);
-    overlay.classList.toggle('zeroHeight');
-    const nextBtn = document.querySelector('#next');
-    nextBtn.addEventListener('click', startNextRound);
+
+    if (round < MAX_ROUNDS) {
+        const winText = document.querySelector('.alertText.win');
+        toggleMessage(winText);
+        overlay.classList.toggle('zeroHeight');
+        const nextBtn = document.querySelector('#next');
+        nextBtn.addEventListener('click', startNextRound);
+    } else {
+        const winText = document.querySelector('.alertText.wonGame');
+        toggleMessage(winText);
+        overlay.classList.toggle('zeroHeight');
+        const playAgainBtn = document.querySelector('#playAgain');
+        playAgainBtn.addEventListener('click', playAgain);
+    }
 }
 
 function startNextRound() {
@@ -263,8 +275,25 @@ function startNextRound() {
     width = INITIAL_WIDTH;
     bar.removeAttribute('style');
 
+    gameRunningTime = 0;
     score = 0;
     numOfCards += 6;
+    createCards();
+    startGame();
+}
+
+function playAgain() {
+    const winText = document.querySelector('.alertText.wonGame');
+    winText.classList.toggle('alertFlex');
+    removeCards();
+
+    // reset bar
+    width = INITIAL_WIDTH;
+    bar.removeAttribute('style');
+    gameRunningTime = 0;
+    round = 0;
+    score = 0;
+    numOfCards = INITIAL_CARD_COUNT;
     createCards();
     startGame();
 }
