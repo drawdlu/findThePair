@@ -310,6 +310,13 @@ function checkWindowClose() {
     });
 }
 
+// Pause when changing tabs
+window.addEventListener('blur', () => {
+    if (gameInSession) {
+        pauseGame();
+    }
+});
+
 createCards(numOfCards);
 listenToGameButtons();
 checkWindowClose();
