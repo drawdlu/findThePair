@@ -29,18 +29,10 @@
     color: #E7F6F2;
 }
 
-.navLinks>li {
-    list-style: none;
+.linkDiv>button {
     font-size: 20px;
-}
-
-li>a {
-    color: #E7F6F2;
-    text-decoration: none;
-}
-
-li>a:hover {
-    color: #A5C9CA;
+    border-radius: 10px;
+    padding: 5px;
 }
 
 /* Display Area */
@@ -131,7 +123,7 @@ li>a:hover {
 }
 
 .overlayPause {
-    top: 165.797px;
+    top: 107px;
     background-color: rgba(0,0,0,0.5);
 }
 
