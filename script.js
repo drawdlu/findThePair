@@ -101,7 +101,7 @@ function startGame(cardCount) {
 
     // display card for a short time
     setTimeout( () => {
-        overlay.style.height = '0';
+        overlay.classList.toggle('zeroHeight');
         toggleAllCards(SHOW_CARD);
         setTimeout(() => {
             toggleAllCards(HIDE_CARD);
@@ -209,12 +209,22 @@ function pauseGame() {
             clearTimeout(currGameTime);
             timePaused = (new Date()).getTime();
             gameRunningTime = gameRunningTime + (timePaused - timeAtStart);
+            toggleOverlay();
         } else {
             gameTimer(GAME_TIMER - gameRunningTime);
             updateBar();
+            toggleOverlay ();
         }
         gameInSession = !gameInSession;
     }
+}
+
+const gameWindow = document.querySelector('.overlay');
+function toggleOverlay () {
+
+    gameWindow.classList.toggle('hideOverlay');
+    gameWindow.classList.toggle('overlayPause');
+    gameWindow.classList.toggle('zeroHeight');
 }
 
 function addPoint() {
@@ -230,6 +240,7 @@ function checkScore() {
 
 const winningSound = new Audio("assets/sounds/winRound.wav");
 function gameWon() {
+    gameWindow.classList.toggle('zeroHeight');
     winningSound.play();
     gameInSession = false;
     clearInterval(intervalBar);
@@ -268,6 +279,7 @@ function endGame() {
         clearInterval(intervalBar);
         const loseText = document.querySelector('.alertText.lose');
         showMessage(loseText);
+        gameWindow.classList.toggle('zeroHeight');
     }
 }
 
