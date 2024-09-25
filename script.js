@@ -2,7 +2,7 @@ const INITIAL_CARD_COUNT = 12;
 const ROW_NUMBER = 4;
 const CARD_SHOW_TIME = 800;
 const TRANSITION_TIME = 1000;
-const GAME_TIMER = 120000;
+const GAME_TIMER = 3000;
 const SHOW_CARD = 'show';
 const HIDE_CARD = 'hide';
 const BAR_SHRINK_TIME = 105;
@@ -17,6 +17,7 @@ let cardOneDigit = null;
 let cardTwoDigit = null;
 let score = 0;
 let round = 0;
+let loseGame = false;
 
 // Render Cards
 function createCards() {
@@ -258,11 +259,7 @@ function roundWon() {
         const nextBtn = document.querySelector('#next');
         nextBtn.addEventListener('click', startNextRound);
     } else {
-        const winText = document.querySelector('.alertText.wonGame');
-        toggleMessage(winText);
-        overlay.classList.toggle('zeroHeight');
-        const playAgainBtn = document.querySelector('#playAgain');
-        playAgainBtn.addEventListener('click', playAgain);
+        playAgainPrompt();
     }
 }
 
@@ -282,10 +279,26 @@ function startNextRound() {
     startGame();
 }
 
-function playAgain() {
+function playAgainPrompt() {
     const winText = document.querySelector('.alertText.wonGame');
-    winText.classList.toggle('alertFlex');
+    toggleMessage(winText);
+    overlay.classList.toggle('zeroHeight');
+    const playAgainBtn = document.querySelector('#playAgain');
+    playAgainBtn.addEventListener('click', playAgain);
+}
+
+function playAgain() {
+    if (loseGame) {
+        const loseText = document.querySelector('.alertText.lose');
+        loseText.classList.toggle('alertFlex');
+    } else {
+        const winText = document.querySelector('.alertText.wonGame');
+        winText.classList.toggle('alertFlex');
+    }
+
     removeCards();
+
+    loseGame = false;
 
     // reset bar
     width = INITIAL_WIDTH;
@@ -347,7 +360,13 @@ function endGame() {
         clearInterval(intervalBar);
         const loseText = document.querySelector('.alertText.lose');
         toggleMessage(loseText);
+
         overlay.classList.toggle('zeroHeight');
+
+        loseGame = true;
+
+        const restart = document.querySelector('#restart');
+        restart.addEventListener('click', playAgain);
     }
 }
 
