@@ -100,8 +100,6 @@ function startGame(cardCount) {
     removeOverlay();
 
     // display card for a short time
-    gameInSession = true;
-    gameInitialStart = true;
     setTimeout( () => {
         overlay.style.height = '0';
         toggleAllCards(SHOW_CARD);
@@ -116,6 +114,8 @@ function startGame(cardCount) {
         listenToCardClicks();
         gameTimer(GAME_TIMER);
         updateBar();
+        gameInSession = true;
+        gameInitialStart = true;
     }, REVEAL_TIME + TRANSITION_TIME * 2);
 }
 

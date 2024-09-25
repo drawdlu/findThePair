@@ -83,6 +83,7 @@ li>a:hover {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+    column-gap: 5px;
 }
 
 .card {
