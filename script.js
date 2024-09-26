@@ -93,7 +93,7 @@ function toggleCard(event) {
                 saveCard(card);
 
                 // TEST
-                // roundWon();
+                roundWon();
             }
         }
     }
@@ -328,21 +328,23 @@ function checkScore() {
 
 
 const winningSound = new Audio("assets/sounds/roundComplete.wav");
+const wonTheGameEffect = new Audio("assets/sounds/gameWon.wav");
 const nextBtn = document.querySelector('#next');
 const nextPressed = document.querySelector('.nextButton');
 const winOrLoseText = document.querySelector('.alertText.winOrLose');
 const winRoundText = document.querySelector('.alertText.win');
 function roundWon() {
-    winningSound.play();
     gameInSession = false;
     clearInterval(intervalBar);
     clearTimeout(currGameTime);
 
     if (round < MAX_ROUNDS) {
+        winningSound.play();
         toggleMessage(winRoundText);
         overlay.classList.toggle('zeroHeight');
         nextButtonTrigger();
     } else {
+        wonTheGameEffect.play();
         playAgainPrompt();
     }
 }
