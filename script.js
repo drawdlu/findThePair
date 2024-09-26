@@ -93,7 +93,7 @@ function toggleCard(event) {
                 saveCard(card);
 
                 // TEST
-                roundWon();
+                // roundWon();
             }
         }
     }
@@ -295,8 +295,11 @@ function pauseGame() {
             gameRunningTime = gameRunningTime + (timePaused - timeAtStart);
             toggleOverlay();
         } else {
-            gameTimer(GAME_TIMER - gameRunningTime);
-            updateBar();
+            setTimeout( () => {
+                gameTimer(GAME_TIMER - gameRunningTime);
+                updateBar();
+            }, TRANSITION_TIME);
+
             toggleOverlay ();
         }
         gameInSession = !gameInSession;
