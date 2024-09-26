@@ -2,7 +2,7 @@ const INITIAL_CARD_COUNT = 36; // 12
 const ROW_NUMBER = 4;
 const CARD_SHOW_TIME = 800;
 const TRANSITION_TIME = 1000;
-const GAME_TIMER = 120000;
+const GAME_TIMER = 10000;
 const SHOW_CARD = 'show';
 const HIDE_CARD = 'hide';
 const BAR_SHRINK_TIME = 105;
@@ -328,8 +328,8 @@ function gameTimer(time) {
 }
 
 const bar = document.querySelector('.timeBar');
-const INITIAL_WIDTH = 90;
-let width = INITIAL_WIDTH + '%';
+const INITIAL_WIDTH = 90 + '%';
+let width = INITIAL_WIDTH;
 function updateBar() {
     const remPercent = getPercentToSubtract();
     intervalBar = setInterval( () => {
@@ -348,7 +348,7 @@ function updateGameBar(numToRemove) {
 }
 
 function getPercentToSubtract() {
-    return (INITIAL_WIDTH / (GAME_TIMER / BAR_SHRINK_TIME))
+    return (INITIAL_WIDTH.slice(0, -1) / (GAME_TIMER / BAR_SHRINK_TIME))
 }
 
 
