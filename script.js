@@ -6,7 +6,7 @@ const GAME_TIMER = 120000;
 const SHOW_CARD = 'show';
 const HIDE_CARD = 'hide';
 const BAR_SHRINK_TIME = 105;
-const MAX_ROUNDS = 5;
+const MAX_ROUNDS = 4;
 const CLICK_START = 250;
 
 let gameInSession = false;
@@ -340,7 +340,7 @@ function startNextRound() {
 
     gameRunningTime = 0;
     score = 0;
-    numOfCards += 6;
+    numOfCards += 8;
     createCards();
     startGame();
 }
