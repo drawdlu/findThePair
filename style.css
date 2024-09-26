@@ -59,23 +59,23 @@
 
 .gameWindow {
     max-width: 100%;
-    background-color: antiquewhite;
+    background-color: black;
     height: 80vh;
     display: flex;
     align-items: stretch;
     flex-direction: column;
     border: 10px solid blueviolet;
+    padding: 0 10px;
     cursor: crosshair;
 }
 
 .row {
     width: 100%;
     flex: auto;
-    background-color: black;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    column-gap: 5px;
+    column-gap: 10px;
 }
 
 .card {
