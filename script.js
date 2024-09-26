@@ -2,7 +2,7 @@ const INITIAL_CARD_COUNT = 12;
 const ROW_NUMBER = 4;
 const CARD_SHOW_TIME = 800;
 const TRANSITION_TIME = 1000;
-const GAME_TIMER = 120000;
+const GAME_TIMER = 1000;
 const SHOW_CARD = 'show';
 const HIDE_CARD = 'hide';
 const BAR_SHRINK_TIME = 105;
@@ -319,6 +319,7 @@ function checkScore() {
 const winningSound = new Audio("assets/sounds/winRound.wav");
 const nextBtn = document.querySelector('#next');
 const nextPressed = document.querySelector('.nextButton');
+const winOrLose = document.querySelector('.alertText.winOrLose');
 function roundWon() {
     winningSound.play();
     gameInSession = false;
@@ -326,8 +327,7 @@ function roundWon() {
     clearTimeout(currGameTime);
 
     if (round < MAX_ROUNDS) {
-        const winText = document.querySelector('.alertText.win');
-        toggleMessage(winText);
+        toggleMessage(winOrLose);
         overlay.classList.toggle('zeroHeight');
         nextButtonTrigger();
     } else {
@@ -378,6 +378,10 @@ function playAgainPrompt() {
     overlay.classList.toggle('zeroHeight');
     const playAgainBtn = document.querySelector('#playAgain');
     playAgainBtn.addEventListener('click', playAgain);
+}
+
+function newGameClick() {
+
 }
 
 function playAgain() {
@@ -451,8 +455,8 @@ function endGame() {
         toggleAllCards(SHOW_CARD);
         loseGameSound.play();
         clearInterval(intervalBar);
-        const loseText = document.querySelector('.alertText.lose');
-        toggleMessage(loseText);
+        winOrLose.firstElementChild.textContent = 'Game Over';
+        toggleMessage(winOrLose);
 
         overlay.classList.toggle('zeroHeight');
 
