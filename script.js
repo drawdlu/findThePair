@@ -328,8 +328,8 @@ function gameTimer(time) {
 }
 
 const bar = document.querySelector('.timeBar');
-const INITIAL_WIDTH = window.getComputedStyle(bar).width;
-let width = INITIAL_WIDTH;
+const INITIAL_WIDTH = 90;
+let width = INITIAL_WIDTH + '%';
 function updateBar() {
     const remPercent = getPercentToSubtract();
     intervalBar = setInterval( () => {
@@ -341,13 +341,14 @@ function updateBar() {
 
 function updateGameBar(numToRemove) {
     if (gameInSession) {
-        width = ((width.slice(0, -2)) - numToRemove).toFixed(1) + 'px';
+        width = (width.slice(0, -1) - numToRemove) + '%';
+        console.log(width);
         bar.style.width = width;
     }
 }
 
 function getPercentToSubtract() {
-    return (INITIAL_WIDTH.slice(0, -2) / (GAME_TIMER / BAR_SHRINK_TIME))
+    return (INITIAL_WIDTH / (GAME_TIMER / BAR_SHRINK_TIME))
 }
 
 
