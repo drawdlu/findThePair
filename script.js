@@ -131,7 +131,9 @@ function startGame() {
 function removeOverlay() {
     const overlayText = document.querySelector('.overlayText');
     overlay.classList.add('hideOverlay');
-    overlayText.style.display = 'none';
+    setTimeout(() => {
+        overlayText.style.display = 'none';
+    }, TRANSITION_TIME);
 }
 
 function saveCard(card) {
@@ -228,7 +230,9 @@ function listenToGameButtons() {
     pausePressed.addEventListener('mouseup', 
         (event) => {
             toggleButton(event);
-            pauseOrResume();
+            if (gameInSession) {
+                pauseOrResume();
+            }
         }
     );
 
@@ -289,7 +293,6 @@ function pauseGame() {
 
 function toggleOverlay() {
     overlay.classList.toggle('hideOverlay');
-    overlay.classList.toggle('overlayPause');
     setTimeout(() => {
         overlay.classList.toggle('zeroHeight');
     }, gameInSession ? 0 : TRANSITION_TIME)
