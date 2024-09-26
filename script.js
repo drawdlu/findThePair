@@ -218,8 +218,7 @@ function listenToGameButtons() {
         startGameAudio.play();
     });
     
-    startPressed.addEventListener('mouseup', 
-        (event) => {
+    startPressed.addEventListener('mouseup', (event) => {
             toggleButton(event)
             setTimeout(() => {
                 startGame(numOfCards);
@@ -261,7 +260,7 @@ function pauseOrResume() {
         setTimeout(() => {
             resumeButtons.classList.toggle('buttonHide');
         }, gameInSession ? TRANSITION_TIME : 0)
-    }, CLICK_START)
+        }, CLICK_START)
 }
 
 function toggleButton(pixelBtn) {
@@ -286,8 +285,11 @@ function toggleButton(pixelBtn) {
 
 let timePaused;
 let gameRunningTime = 0; 
+const pauseSound = new Audio("assets/sounds/pause.wav");
 function pauseGame() {
     if (gameInitialStart) {
+        pauseSound.play();
+        pauseSound.currentTime = 0;
         if (gameInSession) {
             clearInterval(intervalBar);
             clearTimeout(currGameTime);
@@ -457,7 +459,6 @@ function endGame() {
     gameInSession = false;
     if (score < numOfCards / 2) {
         toggleAllCards(SHOW_CARD);
-        loseGameSound.currentTime = 0;
         loseGameSound.play();
         clearInterval(intervalBar);
         winOrLoseText.firstElementChild.textContent = 'Game Over';
@@ -486,6 +487,7 @@ function checkWindowClose() {
         if (gameInitialStart) {
             if (gameInSession) {
                 pauseGame();
+                resumeButtons.classList.toggle('buttonHide');
             }
             event.preventDefault();
             return "Are you sure?";
