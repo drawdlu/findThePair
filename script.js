@@ -106,19 +106,20 @@ const overlay = document.querySelector('.overlay');
 
 function startGame() {
     round += 1;
+
     // remove overlay from display
     removeOverlay();
 
-    // display card for a short time
-    setTimeout( () => {
-        overlay.classList.toggle('zeroHeight');
+    // display cards for a short time
+    setTimeout(() => {
         toggleAllCards(SHOW_CARD);
-        setTimeout(() => {
-            toggleAllCards(HIDE_CARD);
-        }, REVEAL_TIME);
-    
-    }, TRANSITION_TIME)
+    }, TRANSITION_TIME);
 
+    setTimeout(() => {
+        toggleAllCards(HIDE_CARD);
+    }, TRANSITION_TIME + REVEAL_TIME);
+
+    // start game
     setTimeout(() => {
         listenToCardClicks();
         gameTimer(GAME_TIMER);
@@ -126,13 +127,15 @@ function startGame() {
         gameInSession = true;
         gameInitialStart = true;
     }, REVEAL_TIME + TRANSITION_TIME * 2);
+
 }
 
 function removeOverlay() {
-    const overlayText = document.querySelector('.overlayText');
     overlay.classList.add('hideOverlay');
     setTimeout(() => {
+        const overlayText = document.querySelector('.overlayText');
         overlayText.style.display = 'none';
+        overlay.classList.toggle('zeroHeight');
     }, TRANSITION_TIME);
 }
 
@@ -269,6 +272,9 @@ function toggleButton(pixelBtn) {
     } else if (currentButton === resumeBtn || currentButton === resumePressed) {
         resumeBtn.classList.toggle('buttonHide');
         resumePressed.classList.toggle('buttonHide');
+    } else if (currentButton === nextBtn || currentButton === nextPressed) {
+        nextBtn.classList.toggle('buttonHide');
+        nextPressed.classList.toggle('buttonHide');
     }
 }
 
@@ -312,6 +318,7 @@ function checkScore() {
 
 const winningSound = new Audio("assets/sounds/winRound.wav");
 const nextBtn = document.querySelector('#next');
+const nextPressed = document.querySelector('.nextButton');
 function roundWon() {
     winningSound.play();
     gameInSession = false;
@@ -322,27 +329,47 @@ function roundWon() {
         const winText = document.querySelector('.alertText.win');
         toggleMessage(winText);
         overlay.classList.toggle('zeroHeight');
-        const nextBtn = document.querySelector('#next');
-        nextBtn.addEventListener('click', startNextRound);
+        nextButtonTrigger();
     } else {
         playAgainPrompt();
     }
 }
 
+function nextButtonTrigger() {
+    nextBtn.addEventListener('mousedown', toggleButton);
+    nextPressed.addEventListener('mouseup', (event) => {
+        toggleButton(event);
+        startNextRound();
+    }, {once: true})
+}
+
 function startNextRound() {
+    // remove text and assets
     const winText = document.querySelector('.alertText.win');
     winText.classList.toggle('alertFlex');
     removeCards();
+    removeNextListeners();
 
     // reset bar
     width = INITIAL_WIDTH;
     bar.removeAttribute('style');
 
+    // reset score and timers
     gameRunningTime = 0;
     score = 0;
+
+    // start next round
     numOfCards += 8;
     createCards();
     startGame();
+}
+
+function removeNextListeners() {
+    nextBtn.removeEventListener('mousedown', toggleButton);
+    nextPressed.removeEventListener('mouseup', (event) => {
+        toggleButton(event);
+        startNextRound();
+    }, {once: true})
 }
 
 function playAgainPrompt() {
