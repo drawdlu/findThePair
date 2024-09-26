@@ -2,7 +2,7 @@ const INITIAL_CARD_COUNT = 12;
 const ROW_NUMBER = 4;
 const CARD_SHOW_TIME = 800;
 const TRANSITION_TIME = 1000;
-const GAME_TIMER = 1000;
+const GAME_TIMER = 12000;
 const SHOW_CARD = 'show';
 const HIDE_CARD = 'hide';
 const BAR_SHRINK_TIME = 105;
@@ -208,6 +208,8 @@ const pausePressed = document.querySelector('.pauseButton');
 const resumeButtons = document.querySelector('.resumeButtons');
 const resumeBtn = document.querySelector('#resume');
 const resumePressed = document.querySelector('.resumeButton');
+const restartBtn = document.querySelector('#newGame');
+const restartPressed = document.querySelector('.newGameButton');
 
 function listenToGameButtons() { 
     // Start pressed
@@ -275,6 +277,9 @@ function toggleButton(pixelBtn) {
     } else if (currentButton === nextBtn || currentButton === nextPressed) {
         nextBtn.classList.toggle('buttonHide');
         nextPressed.classList.toggle('buttonHide');
+    } else if (currentButton === restartBtn || currentButton === restartPressed) {
+        restartBtn.classList.toggle('buttonHide');
+        restartPressed.classList.toggle('buttonHide');
     }
 }
 
@@ -319,7 +324,8 @@ function checkScore() {
 const winningSound = new Audio("assets/sounds/winRound.wav");
 const nextBtn = document.querySelector('#next');
 const nextPressed = document.querySelector('.nextButton');
-const winOrLose = document.querySelector('.alertText.winOrLose');
+const winOrLoseText = document.querySelector('.alertText.winOrLose');
+const winRoundText = document.querySelector('.alertText.win');
 function roundWon() {
     winningSound.play();
     gameInSession = false;
@@ -327,7 +333,7 @@ function roundWon() {
     clearTimeout(currGameTime);
 
     if (round < MAX_ROUNDS) {
-        toggleMessage(winOrLose);
+        toggleMessage(winRoundText);
         overlay.classList.toggle('zeroHeight');
         nextButtonTrigger();
     } else {
@@ -373,25 +379,15 @@ function removeNextListeners() {
 }
 
 function playAgainPrompt() {
-    const winText = document.querySelector('.alertText.wonGame');
-    toggleMessage(winText);
+    winOrLoseText.firstElementChild.textContent = 'You have finished the game!'
+    toggleMessage(winOrLoseText);
     overlay.classList.toggle('zeroHeight');
-    const playAgainBtn = document.querySelector('#playAgain');
-    playAgainBtn.addEventListener('click', playAgain);
+    handleRestart();
 }
 
-function newGameClick() {
-
-}
 
 function playAgain() {
-    if (loseGame) {
-        const loseText = document.querySelector('.alertText.lose');
-        loseText.classList.toggle('alertFlex');
-    } else {
-        const winText = document.querySelector('.alertText.wonGame');
-        winText.classList.toggle('alertFlex');
-    }
+    winOrLoseText.classList.toggle('alertFlex');
 
     removeCards();
 
@@ -453,18 +449,23 @@ function endGame() {
     gameInSession = false;
     if (score < numOfCards / 2) {
         toggleAllCards(SHOW_CARD);
+        loseGameSound.currentTime = 0;
         loseGameSound.play();
         clearInterval(intervalBar);
-        winOrLose.firstElementChild.textContent = 'Game Over';
-        toggleMessage(winOrLose);
-
+        winOrLoseText.firstElementChild.textContent = 'Game Over';
+        toggleMessage(winOrLoseText);
         overlay.classList.toggle('zeroHeight');
-
         loseGame = true;
-
-        const restart = document.querySelector('#restart');
-        restart.addEventListener('click', playAgain);
+        handleRestart();
     }
+}
+
+function handleRestart() {
+    restartBtn.addEventListener('mousedown', toggleButton);
+    restartPressed.addEventListener('mouseup', (event) => {
+        toggleButton(event);
+        playAgain();
+    }, {once: true});
 }
 
 function toggleMessage(text) {
