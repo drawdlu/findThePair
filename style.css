@@ -10,12 +10,8 @@
 .navigation {
     display: flex;
     justify-content: space-between;
-    padding: 35px 100px;
+    padding: 20px 100px;
     background-color: #2C3333;
-}
-
-.linkDiv {
-    display: flex;
     align-items: center;
 }
 
@@ -120,14 +116,6 @@
     justify-content: center;
     align-items: center;
     transition: opacity 1000ms ease-out;
-}
-
-.overlayPause {
-    position: absolute;
-    top: 107px;
-    height: 90vh;
-    align-self: stretch;
-    background-color: rgba(0,0,0,0.5);
 }
 
 .zeroHeight {

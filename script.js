@@ -199,6 +199,10 @@ function toggleAllCards(cardFace) {
 const startBtn = document.querySelector('#start');
 const startPressed = document.querySelector('.startButton .buttonPressed');
 const pauseBtn = document.querySelector('#pause');
+const pausePressed = document.querySelector('.pauseButton');
+const resumeButtons = document.querySelector('.resumeButtons');
+const resumeBtn = document.querySelector('#resume');
+const resumePressed = document.querySelector('.resumeButton');
 
 function listenToGameButtons() { 
     // Start pressed
@@ -216,7 +220,38 @@ function listenToGameButtons() {
         {once: true}
     );
 
-    pauseBtn.addEventListener('click', pauseGame);
+    // pause pressed
+    pauseBtn.addEventListener('mousedown', (event) => {
+        toggleButton(event);
+    });
+    
+    pausePressed.addEventListener('mouseup', 
+        (event) => {
+            toggleButton(event);
+            pauseOrResume();
+        }
+    );
+
+    // resume pressed
+    resumeBtn.addEventListener('mousedown', (event) => {
+        toggleButton(event);
+    });
+    
+    resumePressed.addEventListener('mouseup', 
+        (event) => {
+            toggleButton(event);
+            pauseOrResume();
+        }
+    );
+}
+
+function pauseOrResume() {
+    setTimeout(() => {
+        pauseGame();
+        setTimeout(() => {
+            resumeButtons.classList.toggle('buttonHide');
+        }, TRANSITION_TIME)
+    }, CLICK_START)
 }
 
 function toggleButton(pixelBtn) {
@@ -224,6 +259,12 @@ function toggleButton(pixelBtn) {
     if (currentButton === startBtn || currentButton === startPressed) {
         startBtn.classList.toggle('buttonHide');
         startPressed.classList.toggle('buttonHide');
+    } else if (currentButton === pauseBtn || currentButton === pausePressed) {
+        pauseBtn.classList.toggle('buttonHide');
+        pausePressed.classList.toggle('buttonHide');
+    } else if (currentButton === resumeBtn || currentButton === resumePressed) {
+        resumeBtn.classList.toggle('buttonHide');
+        resumePressed.classList.toggle('buttonHide');
     }
 }
 
@@ -249,7 +290,10 @@ function pauseGame() {
 function toggleOverlay() {
     overlay.classList.toggle('hideOverlay');
     overlay.classList.toggle('overlayPause');
-    overlay.classList.toggle('zeroHeight');
+    setTimeout(() => {
+        overlay.classList.toggle('zeroHeight');
+    }, 250)
+    
 }
 
 function addPoint() {
