@@ -91,9 +91,6 @@ function toggleCard(event) {
                 selectAudio.currentTime = 0;
                 selectAudio.play();
                 saveCard(card);
-
-                // TEST
-                // roundWon();
             }
         }
     }
@@ -361,6 +358,7 @@ function nextButtonTrigger() {
 
 function startNextRound() {
     // remove text and assets
+    removeNextTriggers();
     const winText = document.querySelector('.alertText.win');
     winText.classList.toggle('alertFlex');
     removeCards();
@@ -386,7 +384,7 @@ function removeNextTriggers() {
     nextPressed.removeEventListener('mouseup', (event) => {
         toggleButton(event);
         startNextRound();
-    });
+    }, {once: true});
 }
 
 function playAgainPrompt() {
