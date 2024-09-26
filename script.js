@@ -1,4 +1,4 @@
-const INITIAL_CARD_COUNT = 36; // 12
+const INITIAL_CARD_COUNT = 12;
 const ROW_NUMBER = 4;
 const CARD_SHOW_TIME = 800;
 const TRANSITION_TIME = 1000;
@@ -250,7 +250,7 @@ function pauseOrResume() {
         pauseGame();
         setTimeout(() => {
             resumeButtons.classList.toggle('buttonHide');
-        }, TRANSITION_TIME)
+        }, gameInSession ? TRANSITION_TIME : 0)
     }, CLICK_START)
 }
 
@@ -292,7 +292,7 @@ function toggleOverlay() {
     overlay.classList.toggle('overlayPause');
     setTimeout(() => {
         overlay.classList.toggle('zeroHeight');
-    }, 250)
+    }, gameInSession ? 0 : TRANSITION_TIME)
     
 }
 
