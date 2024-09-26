@@ -2,11 +2,12 @@ const INITIAL_CARD_COUNT = 36; // 12
 const ROW_NUMBER = 4;
 const CARD_SHOW_TIME = 800;
 const TRANSITION_TIME = 1000;
-const GAME_TIMER = 10000;
+const GAME_TIMER = 120000;
 const SHOW_CARD = 'show';
 const HIDE_CARD = 'hide';
 const BAR_SHRINK_TIME = 105;
 const MAX_ROUNDS = 5;
+const CLICK_START = 250;
 
 let gameInSession = false;
 let gameInitialStart = false;
@@ -196,15 +197,34 @@ function toggleAllCards(cardFace) {
 }
 
 const startBtn = document.querySelector('#start');
+const startPressed = document.querySelector('.startButton .buttonPressed');
 const pauseBtn = document.querySelector('#pause');
 
-function listenToGameButtons() {    
-    startBtn.addEventListener('click', 
-        () => startGame(numOfCards),
+function listenToGameButtons() { 
+    // Start pressed
+    startBtn.addEventListener('mousedown', (event) => {
+        toggleButton(event);
+    });
+    
+    startPressed.addEventListener('mouseup', 
+        (event) => {
+            toggleButton(event)
+            setTimeout(() => {
+                startGame(numOfCards)
+            }, CLICK_START)
+        },
         {once: true}
     );
 
     pauseBtn.addEventListener('click', pauseGame);
+}
+
+function toggleButton(pixelBtn) {
+    const currentButton = pixelBtn.target;
+    if (currentButton === startBtn || currentButton === startPressed) {
+        startBtn.classList.toggle('buttonHide');
+        startPressed.classList.toggle('buttonHide');
+    }
 }
 
 let timePaused;
@@ -227,7 +247,6 @@ function pauseGame() {
 }
 
 function toggleOverlay() {
-
     overlay.classList.toggle('hideOverlay');
     overlay.classList.toggle('overlayPause');
     overlay.classList.toggle('zeroHeight');
@@ -342,7 +361,6 @@ function updateBar() {
 function updateGameBar(numToRemove) {
     if (gameInSession) {
         width = (width.slice(0, -1) - numToRemove) + '%';
-        console.log(width);
         bar.style.width = width;
     }
 }
