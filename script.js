@@ -403,12 +403,15 @@ function playAgain() {
 
     loseGame = false;
 
-    // reset bar
+    // reset
     width = INITIAL_WIDTH;
     bar.removeAttribute('style');
     gameRunningTime = 0;
     round = 0;
     score = 0;
+    cardOne = null;
+    cardTwo = null;
+
     numOfCards = INITIAL_CARD_COUNT;
     createCards();
     startGame();
