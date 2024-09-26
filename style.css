@@ -109,7 +109,7 @@
 
 .overlay,
 .overlayPause {
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: 100%;
     top: 0;
@@ -123,6 +123,7 @@
 }
 
 .overlayPause {
+    position: absolute;
     top: 107px;
     height: 90vh;
     align-self: stretch;
