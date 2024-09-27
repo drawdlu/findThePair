@@ -102,9 +102,8 @@ const REVEAL_TIME = 1000;
 const overlay = document.querySelector('.overlay');
 
 function startGame() {
+    
     round += 1;
-
-    // remove overlay from display
     removeOverlay();
 
     // display cards for a short time
@@ -128,11 +127,10 @@ function startGame() {
 }
 
 function removeOverlay() {
+    console.log("removed")
     overlay.classList.add('hideOverlay');
     setTimeout(() => {
-        const overlayText = document.querySelector('.overlayText');
-        overlayText.style.display = 'none';
-        overlay.classList.toggle('zeroHeight');
+        overlay.classList.add('zeroHeight');
     }, TRANSITION_TIME);
 }
 
@@ -218,6 +216,8 @@ function listenToGameButtons() {
     startPressed.addEventListener('mouseup', (event) => {
             toggleButton(event)
             setTimeout(() => {
+                const overlayText = document.querySelector('.overlayText');
+                overlayText.style.display = 'none';
                 startGame(numOfCards);
             }, CLICK_START);
         },
@@ -292,25 +292,22 @@ function pauseGame() {
             clearTimeout(currGameTime);
             timePaused = (new Date()).getTime();
             gameRunningTime = gameRunningTime + (timePaused - timeAtStart);
-            toggleOverlay();
+            addOverlay();
         } else {
             setTimeout( () => {
                 gameTimer(GAME_TIMER - gameRunningTime);
                 updateBar();
             }, TRANSITION_TIME);
 
-            toggleOverlay ();
+            removeOverlay();
         }
         gameInSession = !gameInSession;
     }
 }
 
-function toggleOverlay() {
-    overlay.classList.toggle('hideOverlay');
-    setTimeout(() => {
-        overlay.classList.toggle('zeroHeight');
-    }, gameInSession ? 0 : TRANSITION_TIME)
-    
+function addOverlay() {
+    overlay.classList.remove('hideOverlay');
+    overlay.classList.remove('zeroHeight');
 }
 
 function addPoint() {
@@ -337,8 +334,7 @@ function roundWon() {
 
     if (round < MAX_ROUNDS) {
         winningSound.play();
-        toggleMessage(winRoundText);
-        overlay.classList.toggle('zeroHeight');
+        addMessage(winRoundText);
         nextButtonTrigger();
     } else {
         wonTheGameEffect.play();
@@ -389,8 +385,7 @@ function removeNextTriggers() {
 
 function playAgainPrompt() {
     winOrLoseText.firstElementChild.textContent = 'You have finished the game!';
-    toggleMessage(winOrLoseText);
-    overlay.classList.toggle('zeroHeight');
+    addMessage(winOrLoseText);
     handleRestart();
 }
 
@@ -465,8 +460,7 @@ function endGame() {
         loseGameSound.play();
         clearInterval(intervalBar);
         winOrLoseText.firstElementChild.textContent = 'Game Over';
-        toggleMessage(winOrLoseText);
-        overlay.classList.toggle('zeroHeight');
+        addMessage(winOrLoseText);
         loseGame = true;
         handleRestart();
     }
@@ -480,9 +474,9 @@ function handleRestart() {
     }, {once: true});
 }
 
-function toggleMessage(text) {
-    text.classList.toggle('alertFlex');
-    overlay.classList.toggle('hideOverlay');
+function addMessage(text) {
+    text.classList.add('alertFlex');
+    addOverlay();
 }
 
 function checkWindowClose() {
