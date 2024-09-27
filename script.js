@@ -91,9 +91,6 @@ function toggleCard(event) {
                 selectAudio.currentTime = 0;
                 selectAudio.play();
                 saveCard(card);
-
-                // test
-                roundWon();
             }
         }
     }
