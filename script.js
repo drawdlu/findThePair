@@ -356,7 +356,7 @@ function startNextRound() {
     // remove text and assets
     removeNextTriggers();
     const winText = document.querySelector('.alertText.win');
-    winText.classList.toggle('alertFlex');
+    winText.classList.remove('alertFlex');
     removeCards();
 
     nextRoundSound.play();
