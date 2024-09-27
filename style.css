@@ -138,11 +138,16 @@
     background-color: #2C3333;
     padding: 20px;
     border-radius: 10px;
+    line-height: 1.3em;
 }
 
-.instructions>ol {
+.instructions ol {
     padding-left: 40px;
     padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.instructions li {
     padding-bottom: 10px;
 }
 
