@@ -66,8 +66,8 @@ function createValues() {
     const numOfPairs = numOfCards / 2;
 
     for (let i = 1; i <= numOfPairs; i++) {
-        arrayOfPairs.push(i)
-        arrayOfPairs.push(i)
+        arrayOfPairs.push(i);
+        arrayOfPairs.push(i);
     }
 
     return arrayOfPairs.sort(() => .5 - Math.random());
@@ -77,7 +77,7 @@ function createValues() {
 function listenToCardClicks() {
     const cardContainer = document.querySelectorAll('.card')
     cardContainer.forEach( (card) => {
-        card.addEventListener('click', toggleCard)
+        card.addEventListener('click', toggleCard);
     })
 }
 
@@ -498,6 +498,12 @@ function checkWindowClose() {
 //         pauseGame();
 //     }
 // });
+
+// Prevent dragging and highlighting
+window.addEventListener('mousedown', (event) => {
+    event.preventDefault();
+});
+
 
 createCards(numOfCards);
 listenToGameButtons();
