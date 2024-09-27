@@ -31,10 +31,10 @@
 }
 
 /* Display Area */
-
+/* #4D2CC4 */
 .displayArea {
     max-width: 100%;
-    background-color: #4D2CC4;
+    background-color: #2C5CC4;
     height: 10vh;
     display: flex;
     justify-content: center;
@@ -54,7 +54,7 @@
 
 .gameWindow {
     max-width: 100%;
-    background-color: #4D2CC4;
+    background-color: #2C5CC4;
     height: 80vh;
     display: flex;
     align-items: stretch;
@@ -184,6 +184,16 @@
     padding: 10px;
     font-size: 15px;
     border-radius: 5px;
+}
+
+.readyStart {
+    position: fixed;
+    align-self: center;
+    font-size: 9em;
+    font-weight: bold;
+    color: white;
+    z-index: 2;
+    top: 40%;
 }
 
 /* FONTS */

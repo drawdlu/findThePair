@@ -91,6 +91,9 @@ function toggleCard(event) {
                 selectAudio.currentTime = 0;
                 selectAudio.play();
                 saveCard(card);
+
+                // test
+                roundWon();
             }
         }
     }
@@ -100,11 +103,14 @@ function toggleCard(event) {
 const REVEAL_TIME = 1000;
 
 const overlay = document.querySelector('.overlay');
+const readyStart = document.querySelector('.readyStart');
 
 function startGame() {
     
     round += 1;
     removeOverlay();
+    readyStart.classList.toggle('hideOverlay');
+    readyStart.classList.toggle('zeroHeight');
 
     // display cards for a short time
     setTimeout(() => {
@@ -117,6 +123,8 @@ function startGame() {
 
     // start game
     setTimeout(() => {
+        toggleReadyStartText();
+        readyStart.classList.toggle('hideOverlay');
         listenToCardClicks();
         gameTimer(GAME_TIMER);
         updateBar();
@@ -124,10 +132,20 @@ function startGame() {
         gameInitialStart = true;
     }, REVEAL_TIME + TRANSITION_TIME * 2);
 
+    setTimeout( () => {
+        readyStart.classList.toggle('zeroHeight');
+        toggleReadyStartText();
+    }, REVEAL_TIME + TRANSITION_TIME * 3)
+
+}
+
+
+function toggleReadyStartText() {
+    readyStart.firstElementChild.classList.toggle('buttonHide');
+    readyStart.lastElementChild.classList.toggle('buttonHide');
 }
 
 function removeOverlay() {
-    console.log("removed")
     overlay.classList.add('hideOverlay');
     setTimeout(() => {
         overlay.classList.add('zeroHeight');
