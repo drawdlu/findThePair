@@ -210,18 +210,11 @@ function toggleAllCards(cardFace) {
     });
 }
 
-const startBtn = document.querySelector('#start');
-const startPressed = document.querySelector('.startButton .buttonPressed');
-const pauseBtn = document.querySelector('#pause');
-const pausePressed = document.querySelector('.pauseButton');
-const resumeButtons = document.querySelector('.resumeButtons');
-const resumeBtn = document.querySelector('#resume');
-const resumePressed = document.querySelector('.resumeButton');
-const restartBtn = document.querySelector('#newGame');
-const restartPressed = document.querySelector('.newGameButton');
 const startGameAudio = new Audio("assets/sounds/gameStart.wav");
 function listenToGameButtons() { 
     // Start pressed
+    const startBtn = document.querySelector('#start');
+    const startPressed = document.querySelector('.startButton .buttonPressed');
     startBtn.addEventListener('mousedown', () => {
         toggleButton(startBtn, startPressed);
         startGameAudio.play();
@@ -239,6 +232,8 @@ function listenToGameButtons() {
     );
 
     // pause pressed
+    const pauseBtn = document.querySelector('#pause');
+    const pausePressed = document.querySelector('.pauseButton');
     pauseBtn.addEventListener('mousedown', () => {
         toggleButton(pauseBtn, pausePressed);
     });
@@ -252,6 +247,8 @@ function listenToGameButtons() {
     );
 
     // resume pressed
+    const resumeBtn = document.querySelector('#resume');
+    const resumePressed = document.querySelector('.resumeButton');
     resumeBtn.addEventListener('mousedown', () => {
         toggleButton(resumeBtn, resumePressed);
     });
@@ -263,6 +260,7 @@ function listenToGameButtons() {
     );
 }
 
+const resumeButtons = document.querySelector('.resumeButtons');
 function pauseOrResume() {
     setTimeout(() => {
         pauseGame();
@@ -278,7 +276,7 @@ function toggleButton(pixelBtn, pixelBtnPressed) {
 
 }
 
-let timePaused;
+
 let gameRunningTime = 0; 
 const pauseSound = new Audio("assets/sounds/pause.wav");
 function pauseGame() {
@@ -288,7 +286,7 @@ function pauseGame() {
         if (gameInSession) {
             clearInterval(intervalBar);
             clearTimeout(currGameTime);
-            timePaused = (new Date()).getTime();
+            let timePaused = (new Date()).getTime();
             gameRunningTime = gameRunningTime + (timePaused - timeAtStart);
             addOverlay();
         } else {
@@ -319,34 +317,35 @@ function checkScore() {
 }
 
 
-const winningSound = new Audio("assets/sounds/roundComplete.wav");
-const wonTheGameEffect = new Audio("assets/sounds/gameWon.wav");
-const nextBtn = document.querySelector('#next');
-const nextPressed = document.querySelector('.nextButton');
-const winOrLoseText = document.querySelector('.alertText.winOrLose');
-const winRoundText = document.querySelector('.alertText.win');
 function roundWon() {
     gameInSession = false;
     clearInterval(intervalBar);
     clearTimeout(currGameTime);
 
     if (round < MAX_ROUNDS) {
+        const winningSound = new Audio("assets/sounds/roundComplete.wav");
+        const winRoundText = document.querySelector('.alertText.win');
         winningSound.play();
         addMessage(winRoundText);
         nextButtonTrigger();
     } else {
+        const wonTheGameEffect = new Audio("assets/sounds/gameWon.wav");
         wonTheGameEffect.play();
         playAgainPrompt();
     }
 }
 
-const nextRoundSound = new Audio("assets/sounds/nextRound.wav");
+
 function nextButtonTrigger() {
+    const nextBtn = document.querySelector('#next');
+    const nextPressed = document.querySelector('.nextButton');
+    const nextRoundSound = new Audio("assets/sounds/nextRound.wav");
+
     nextBtn.addEventListener('mousedown', () => {
+        nextRoundSound.play();
         toggleButton(nextBtn, nextPressed);
     }, {once: true});
     nextPressed.addEventListener('mouseup', () => {
-        nextRoundSound.play();
         toggleButton(nextBtn, nextPressed);
         startNextRound();
     }, {once: true});
@@ -357,8 +356,6 @@ function startNextRound() {
     const winText = document.querySelector('.alertText.win');
     winText.classList.remove('alertFlex');
     removeCards();
-
-    nextRoundSound.play();
 
     // reset bar
     width = INITIAL_WIDTH;
@@ -374,16 +371,14 @@ function startNextRound() {
     startGame();
 }
 
+const winOrLoseText = document.querySelector('.alertText.winOrLose');
 function playAgainPrompt() {
     winOrLoseText.firstElementChild.textContent = 'You have finished the game!';
     addMessage(winOrLoseText);
     handleRestart();
 }
 
-
 function playAgain() {
-    startGameAudio.play();
-
     winOrLoseText.classList.toggle('alertFlex');
     removeCards();
 
@@ -441,12 +436,13 @@ function getPercentToSubtract() {
 }
 
 
-const loseGameSound = new Audio("assets/sounds/gameOver.wav");
+
 function endGame() {
     gameInSession = false;
     if (score < numOfCards / 2) {
-        toggleAllCards(SHOW_CARD);
+        const loseGameSound = new Audio("assets/sounds/gameOver.wav");
         loseGameSound.play();
+        toggleAllCards(SHOW_CARD);
         clearInterval(intervalBar);
         winOrLoseText.firstElementChild.textContent = 'Game Over';
         addMessage(winOrLoseText);
@@ -455,8 +451,12 @@ function endGame() {
 }
 
 function handleRestart() {
+    const restartBtn = document.querySelector('#newGame');
+    const restartPressed = document.querySelector('.newGameButton');
+    
     restartBtn.addEventListener('mousedown', () => {
         toggleButton(restartBtn, restartPressed);
+        startGameAudio.play();
     }, {once: true});
     restartPressed.addEventListener('mouseup', (event) => {
         toggleButton(restartBtn, restartPressed);
@@ -483,11 +483,11 @@ function checkWindowClose() {
 }
 
 // Pause when changing tabs
-// window.addEventListener('blur', () => {
-//     if (gameInSession) {
-//         pauseGame();
-//     }
-// });
+window.addEventListener('blur', () => {
+    if (gameInSession) {
+        pauseGame();
+    }
+});
 
 // Prevent dragging and highlighting
 window.addEventListener('mousedown', (event) => {
