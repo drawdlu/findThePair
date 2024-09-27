@@ -209,3 +209,21 @@
     src: url(assets/fonts/slkscrb.ttf);
     font-weight: bold;
 }
+
+.credits {
+    text-align: center;
+    padding: 10px 0;
+    line-height: 1.1em;
+    background-color: #9ccc44;
+    background-image: url("assets/displayBG.png");
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.creditText {
+    background-color: #d3a33b;
+    max-width: 400px;
+    padding: 10px;
+    border-radius: 8px;
+}
