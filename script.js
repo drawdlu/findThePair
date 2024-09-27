@@ -2,7 +2,7 @@ const INITIAL_CARD_COUNT = 12;
 const ROW_NUMBER = 4;
 const CARD_SHOW_TIME = 800;
 const TRANSITION_TIME = 1000;
-const GAME_TIMER = 120000;
+const GAME_TIMER = 1000;
 const SHOW_CARD = 'show';
 const HIDE_CARD = 'hide';
 const BAR_SHRINK_TIME = 105;
@@ -18,7 +18,6 @@ let cardOneDigit = null;
 let cardTwoDigit = null;
 let score = 0;
 let round = 0;
-let loseGame = false;
 
 // Render Cards
 function createCards() {
@@ -223,13 +222,13 @@ const restartPressed = document.querySelector('.newGameButton');
 const startGameAudio = new Audio("assets/sounds/gameStart.wav");
 function listenToGameButtons() { 
     // Start pressed
-    startBtn.addEventListener('mousedown', (event) => {
-        toggleButton(event);
+    startBtn.addEventListener('mousedown', () => {
+        toggleButton(startBtn, startPressed);
         startGameAudio.play();
     });
     
-    startPressed.addEventListener('mouseup', (event) => {
-            toggleButton(event)
+    startPressed.addEventListener('mouseup', () => {
+            toggleButton(startBtn, startPressed)
             setTimeout(() => {
                 const overlayText = document.querySelector('.overlayText');
                 overlayText.style.display = 'none';
@@ -240,13 +239,12 @@ function listenToGameButtons() {
     );
 
     // pause pressed
-    pauseBtn.addEventListener('mousedown', (event) => {
-        toggleButton(event);
+    pauseBtn.addEventListener('mousedown', () => {
+        toggleButton(pauseBtn, pausePressed);
     });
     
-    pausePressed.addEventListener('mouseup', 
-        (event) => {
-            toggleButton(event);
+    pausePressed.addEventListener('mouseup', () => {
+            toggleButton(pauseBtn, pausePressed);
             if (gameInSession) {
                 pauseOrResume();
             }
@@ -254,13 +252,12 @@ function listenToGameButtons() {
     );
 
     // resume pressed
-    resumeBtn.addEventListener('mousedown', (event) => {
-        toggleButton(event);
+    resumeBtn.addEventListener('mousedown', () => {
+        toggleButton(resumeBtn, resumePressed);
     });
     
-    resumePressed.addEventListener('mouseup', 
-        (event) => {
-            toggleButton(event);
+    resumePressed.addEventListener('mouseup', () => {
+            toggleButton(resumeBtn, resumePressed);
             pauseOrResume();
         }
     );
@@ -275,24 +272,10 @@ function pauseOrResume() {
         }, CLICK_START)
 }
 
-function toggleButton(pixelBtn) {
-    const currentButton = pixelBtn.target;
-    if (currentButton === startBtn || currentButton === startPressed) {
-        startBtn.classList.toggle('buttonHide');
-        startPressed.classList.toggle('buttonHide');
-    } else if (currentButton === pauseBtn || currentButton === pausePressed) {
-        pauseBtn.classList.toggle('buttonHide');
-        pausePressed.classList.toggle('buttonHide');
-    } else if (currentButton === resumeBtn || currentButton === resumePressed) {
-        resumeBtn.classList.toggle('buttonHide');
-        resumePressed.classList.toggle('buttonHide');
-    } else if (currentButton === nextBtn || currentButton === nextPressed) {
-        nextBtn.classList.toggle('buttonHide');
-        nextPressed.classList.toggle('buttonHide');
-    } else if (currentButton === restartBtn || currentButton === restartPressed) {
-        restartBtn.classList.toggle('buttonHide');
-        restartPressed.classList.toggle('buttonHide');
-    }
+function toggleButton(pixelBtn, pixelBtnPressed) {
+    pixelBtn.classList.toggle('buttonHide');
+    pixelBtnPressed.classList.toggle('buttonHide');
+
 }
 
 let timePaused;
@@ -359,17 +342,18 @@ function roundWon() {
 
 const nextRoundSound = new Audio("assets/sounds/nextRound.wav");
 function nextButtonTrigger() {
-    nextBtn.addEventListener('mousedown', toggleButton);
-    nextPressed.addEventListener('mouseup', (event) => {
+    nextBtn.addEventListener('mousedown', () => {
+        toggleButton(nextBtn, nextPressed);
+    }, {once: true});
+    nextPressed.addEventListener('mouseup', () => {
         nextRoundSound.play();
-        toggleButton(event);
+        toggleButton(nextBtn, nextPressed);
         startNextRound();
     }, {once: true});
 }
 
 function startNextRound() {
     // remove text and assets
-    removeNextTriggers();
     const winText = document.querySelector('.alertText.win');
     winText.classList.remove('alertFlex');
     removeCards();
@@ -390,14 +374,6 @@ function startNextRound() {
     startGame();
 }
 
-function removeNextTriggers() {
-    nextBtn.removeEventListener('mousedown', toggleButton);
-    nextPressed.removeEventListener('mouseup', (event) => {
-        toggleButton(event);
-        startNextRound();
-    }, {once: true});
-}
-
 function playAgainPrompt() {
     winOrLoseText.firstElementChild.textContent = 'You have finished the game!';
     addMessage(winOrLoseText);
@@ -410,8 +386,6 @@ function playAgain() {
 
     winOrLoseText.classList.toggle('alertFlex');
     removeCards();
-
-    loseGame = false;
 
     // reset
     width = INITIAL_WIDTH;
@@ -476,15 +450,16 @@ function endGame() {
         clearInterval(intervalBar);
         winOrLoseText.firstElementChild.textContent = 'Game Over';
         addMessage(winOrLoseText);
-        loseGame = true;
         handleRestart();
     }
 }
 
 function handleRestart() {
-    restartBtn.addEventListener('mousedown', toggleButton);
+    restartBtn.addEventListener('mousedown', () => {
+        toggleButton(restartBtn, restartPressed);
+    }, {once: true});
     restartPressed.addEventListener('mouseup', (event) => {
-        toggleButton(event);
+        toggleButton(restartBtn, restartPressed);
         playAgain();
     }, {once: true});
 }
