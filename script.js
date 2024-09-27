@@ -2,7 +2,7 @@ const INITIAL_CARD_COUNT = 12;
 const ROW_NUMBER = 4;
 const CARD_SHOW_TIME = 800;
 const TRANSITION_TIME = 1000;
-const GAME_TIMER = 1000;
+const GAME_TIMER = 120000;
 const SHOW_CARD = 'show';
 const HIDE_CARD = 'hide';
 const BAR_SHRINK_TIME = 105;
@@ -169,7 +169,7 @@ function checkMatch() {
             removeClickEvents();
             setCardsNull();
             addPoint();
-            setTimeout(checkScore, TRANSITION_TIME);
+            checkScore();
         } else {
             setTimeout(() => {
                 closeCards();
@@ -312,24 +312,23 @@ function addPoint() {
 
 function checkScore() {
     if (score === numOfCards / 2) {
-        roundWon();
+        setTimeout(roundWon, TRANSITION_TIME);
     }
 }
 
-
+const wonTheGameEffect = new Audio("assets/sounds/gameWon.wav");
+const winningSound = new Audio("assets/sounds/roundComplete.wav");
+const winRoundText = document.querySelector('.alertText.win');
 function roundWon() {
     gameInSession = false;
     clearInterval(intervalBar);
     clearTimeout(currGameTime);
 
     if (round < MAX_ROUNDS) {
-        const winningSound = new Audio("assets/sounds/roundComplete.wav");
-        const winRoundText = document.querySelector('.alertText.win');
         winningSound.play();
         addMessage(winRoundText);
         nextButtonTrigger();
     } else {
-        const wonTheGameEffect = new Audio("assets/sounds/gameWon.wav");
         wonTheGameEffect.play();
         playAgainPrompt();
     }
@@ -340,7 +339,6 @@ function nextButtonTrigger() {
     const nextBtn = document.querySelector('#next');
     const nextPressed = document.querySelector('.nextButton');
     const nextRoundSound = new Audio("assets/sounds/nextRound.wav");
-
     nextBtn.addEventListener('mousedown', () => {
         nextRoundSound.play();
         toggleButton(nextBtn, nextPressed);
@@ -436,11 +434,10 @@ function getPercentToSubtract() {
 }
 
 
-
+const loseGameSound = new Audio("assets/sounds/gameOver.wav");
 function endGame() {
     gameInSession = false;
     if (score < numOfCards / 2) {
-        const loseGameSound = new Audio("assets/sounds/gameOver.wav");
         loseGameSound.play();
         toggleAllCards(SHOW_CARD);
         clearInterval(intervalBar);
@@ -486,6 +483,7 @@ function checkWindowClose() {
 window.addEventListener('blur', () => {
     if (gameInSession) {
         pauseGame();
+        resumeButtons.classList.toggle('buttonHide');
     }
 });
 
